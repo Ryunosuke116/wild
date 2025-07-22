@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\scene">
+      <UniqueIdentifier>{7753078e-162a-4db8-b34a-5623b1f1d137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\manager">
+      <UniqueIdentifier>{a1ae3b52-15f3-482f-bf71-1c042ad1dd9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base">
+      <UniqueIdentifier>{19f9818e-4940-4bf8-9cd5-508977b15c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\manager\scene">
+      <UniqueIdentifier>{33597ce1-046a-48ff-8810-923e0dcdfc7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\scene">
+      <UniqueIdentifier>{6c8da9bd-638d-474f-b5eb-8314159ae942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\manager">
+      <UniqueIdentifier>{0d7ef4c5-95f4-47f8-9ca9-63640bd3904c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\manager\object">
+      <UniqueIdentifier>{b93b4419-5a96-495e-a883-015e05c16457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\chara">
+      <UniqueIdentifier>{858f9232-e45d-41f6-b423-8a7fea610804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\padInput">
+      <UniqueIdentifier>{ea03064a-475e-40b0-9974-605742ef525a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\input">
+      <UniqueIdentifier>{dc52bd02-3cc6-4808-9041-1688897231b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player">
+      <UniqueIdentifier>{64bb400d-fcac-4a50-a562-11962415b8e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\object">
+      <UniqueIdentifier>{b873e5ee-3ac1-4622-a50c-1fa68cba0517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\field">
+      <UniqueIdentifier>{4cdf8474-540e-4b11-9f2c-260fff498734}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\camera">
+      <UniqueIdentifier>{4cf8057c-b177-41f3-b688-9ca7517e789b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\calculation">
+      <UniqueIdentifier>{00459ff9-7860-4b89-baec-3a086381ea89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\hitCheck">
+      <UniqueIdentifier>{a612d7e5-f024-43b8-8c96-037bb35b62bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\objectManager">
+      <UniqueIdentifier>{4a958fc0-283c-4626-a952-28ee5a0c3e66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\interFace">
+      <UniqueIdentifier>{a06ed70f-7462-4c74-8376-63742bfcdcdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\manager\player">
+      <UniqueIdentifier>{a7bbb023-a042-4c19-aec2-99b9f2804b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\manager\collision">
+      <UniqueIdentifier>{983115f9-bc2a-4e14-b476-f734ca0de0eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\skyDome">
+      <UniqueIdentifier>{27330440-d910-4295-8d2c-523df7c7630c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル\manager\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScene.cpp">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseManager.cpp">
+      <Filter>ソース ファイル\base\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>ソース ファイル\manager\object</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseChara.cpp">
+      <Filter>ソース ファイル\base\chara</Filter>
+    </ClCompile>
+    <ClCompile Include="PadInput.cpp">
+      <Filter>ソース ファイル\padInput</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\input</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\player</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseObject.cpp">
+      <Filter>ソース ファイル\base\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Field.cpp">
+      <Filter>ソース ファイル\field</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Calculation.cpp">
+      <Filter>ソース ファイル\calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="HitCheck.cpp">
+      <Filter>ソース ファイル\hitCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseGameObjectManager.cpp">
+      <Filter>ソース ファイル\base\objectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerManager.cpp">
+      <Filter>ソース ファイル\manager\player</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>ソース ファイル\manager\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyDome.cpp">
+      <Filter>ソース ファイル\skyDome</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>ソース ファイル\manager\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScene.h">
+      <Filter>ソース ファイル\base\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseManager.h">
+      <Filter>ソース ファイル\base\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>ソース ファイル\manager\object</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseChara.h">
+      <Filter>ソース ファイル\base\chara</Filter>
+    </ClInclude>
+    <ClInclude Include="PadInput.h">
+      <Filter>ソース ファイル\padInput</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ソース ファイル\input</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ソース ファイル\player</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObject.h">
+      <Filter>ソース ファイル\base\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Field.h">
+      <Filter>ソース ファイル\field</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ソース ファイル\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Calculation.h">
+      <Filter>ソース ファイル\calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="HitCheck.h">
+      <Filter>ソース ファイル\hitCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="objects.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseGameObjectManager.h">
+      <Filter>ソース ファイル\base\objectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager_interface.h">
+      <Filter>ソース ファイル\interFace</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerManager.h">
+      <Filter>ソース ファイル\manager\player</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>ソース ファイル\manager\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyDome.h">
+      <Filter>ソース ファイル\skyDome</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
