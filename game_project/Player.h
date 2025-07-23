@@ -1,8 +1,15 @@
 #pragma once
 #include "BaseChara.h"
-#include "CollisionManager.h"
 #include "Calculation.h"
 #include  "nlohmann/json.hpp"
+#include "PlayerData.h"
+#include "PlayerStateActionBase.h"
+#include "AnimationChanger.h"
+#include "PlayerCalculation.h"
+
+class PlayerStateActionBase;
+class Idle;
+class Run;
 
 class Player : public BaseChara
 {
@@ -42,16 +49,31 @@ private:
 	bool isCalc_moveVec;
 
 	//他クラス
+	std::shared_ptr<PlayerStateActionBase> nowState;
+	PlayerStateActionBase::AnimState oldAnimState;
+	PlayerStateActionBase::AnimState nowAnimState;
+	PlayerData playerData;
+	std::shared_ptr<AnimationChanger> animationChacger = NULL;
 
 public:
 	Player();
 	~Player();
 
-	void Initialize();
+	void Initialize()override;
 	void Update()override;
+	void Update(const VECTOR& cameraDirection,
+		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects);
 	/*void Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects);*/
-	bool Draw();
+	bool Draw()override;
+
+	void ChengeState();
+
+	VECTOR Command(const VECTOR& cameraDirection, PlayerData& playerData);
+	VECTOR Move(const VECTOR& cameraDirection, PlayerData& playerData);
+	void JumpMove(PlayerData& playerData);
+
+	std::shared_ptr<PlayerCalculation> playerCalculation = NULL;
 
 	//////////////////////////////////
 	//　ゲッター
@@ -66,10 +88,12 @@ public:
 	VECTOR GetHeadPos() { return headPos; }
 	VECTOR GetHandPos_right() { return handPos_right; }
 	VECTOR GetHandPos_left() { return handPos_left; }
+	PlayerData GetData() { return playerData; }
 
 	//////////////////////////////////
 	/// セッター
 	///////////////////////////////// 
 	void SetPos(VECTOR newPos) { position = newPos; }
+
 };
 

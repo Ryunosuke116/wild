@@ -76,6 +76,30 @@
     <Filter Include="ソース ファイル\skyDome">
       <UniqueIdentifier>{27330440-d910-4295-8d2c-523df7c7630c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\player\state">
+      <UniqueIdentifier>{ddbbd334-0a3c-404c-b30c-678152d29649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\base">
+      <UniqueIdentifier>{49587061-7aca-48b8-8c33-750a05037c70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\run">
+      <UniqueIdentifier>{612f237d-0c7e-4a25-958a-830a21ea0ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\idle">
+      <UniqueIdentifier>{c0bdae21-448c-490a-84e8-7b5fad7c8a46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\Calculation_chara">
+      <UniqueIdentifier>{4521be3d-28e6-4a14-b46a-39856e08ac44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\calculation">
+      <UniqueIdentifier>{7ba4b3f4-83aa-4613-a1c0-accb6f8b7493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\animation">
+      <UniqueIdentifier>{b2216e5e-b4f1-424a-8dc5-a8dbd317adb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Collision">
+      <UniqueIdentifier>{b2fe3827-e9d9-47de-9205-33d9443e03b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -134,6 +158,27 @@
     </ClCompile>
     <ClCompile Include="SkyDome.cpp">
       <Filter>ソース ファイル\skyDome</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateActionBase.cpp">
+      <Filter>ソース ファイル\player\state\base</Filter>
+    </ClCompile>
+    <ClCompile Include="Idle.cpp">
+      <Filter>ソース ファイル\player\state\idle</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCalculation_chara.cpp">
+      <Filter>ソース ファイル\base\Calculation_chara</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCalculation.cpp">
+      <Filter>ソース ファイル\player\calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationChanger.cpp">
+      <Filter>ソース ファイル\player\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Run_standard.cpp">
+      <Filter>ソース ファイル\player\state\run</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>ソース ファイル\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +244,36 @@
     </ClInclude>
     <ClInclude Include="SkyDome.h">
       <Filter>ソース ファイル\skyDome</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateActionBase.h">
+      <Filter>ソース ファイル\player\state\base</Filter>
+    </ClInclude>
+    <ClInclude Include="Idle.h">
+      <Filter>ソース ファイル\player\state\idle</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCalculation_chara.h">
+      <Filter>ソース ファイル\base\Calculation_chara</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCalculation.h">
+      <Filter>ソース ファイル\player\calculation</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="playerAnim_all.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationChanger.h">
+      <Filter>ソース ファイル\player\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Run_standard.h">
+      <Filter>ソース ファイル\player\state\run</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>ソース ファイル\Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

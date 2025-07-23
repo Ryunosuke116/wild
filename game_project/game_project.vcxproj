@@ -135,6 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationChanger.cpp" />
+    <ClCompile Include="BaseCalculation_chara.cpp" />
     <ClCompile Include="BaseChara.cpp" />
     <ClCompile Include="BaseGameObjectManager.cpp" />
     <ClCompile Include="BaseManager.cpp" />
@@ -147,15 +149,21 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="HitCheck.cpp" />
+    <ClCompile Include="Idle.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PadInput.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerCalculation.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
+    <ClCompile Include="PlayerStateActionBase.cpp" />
+    <ClCompile Include="Run_standard.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SkyDome.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationChanger.h" />
+    <ClInclude Include="BaseCalculation_chara.h" />
     <ClInclude Include="BaseChara.h" />
     <ClInclude Include="BaseGameObjectManager.h" />
     <ClInclude Include="BaseManager.h" />
@@ -164,19 +172,27 @@
     <ClInclude Include="Calculation.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="HitCheck.h" />
+    <ClInclude Include="Idle.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="ObjectManager_interface.h" />
     <ClInclude Include="objects.h" />
     <ClInclude Include="PadInput.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="playerAnim_all.h" />
+    <ClInclude Include="PlayerCalculation.h" />
+    <ClInclude Include="PlayerData.h" />
     <ClInclude Include="PlayerManager.h" />
+    <ClInclude Include="PlayerStateActionBase.h" />
+    <ClInclude Include="Run_standard.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SkyDome.h" />
+    <ClInclude Include="AnimState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

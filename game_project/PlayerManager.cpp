@@ -1,9 +1,9 @@
 #include "common.h"
 #include "Player.h"
-#include "CollisionManager.h"
 #include "BaseObject.h"
 #include "PlayerManager.h"
 #include "Calculation.h"
+
 
 /// <summary>
 /// コンストラクタ
@@ -42,8 +42,7 @@ void PlayerManager::Initialize()
 void PlayerManager::Update(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
 	const VECTOR& cameraDirection)
 {
-
-	player->Update();
+	actualPlayer->Update(cameraDirection, fieldObjects);
 
 	/*if(actualPlayer->GetData().isHanging)
 	{
