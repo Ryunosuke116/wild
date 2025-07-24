@@ -14,7 +14,7 @@ Player::Player()
 	MV1SetScale(modelHandle, VGet(modelScale, modelScale, modelScale));
 	MV1SetPosition(modelHandle, position);
 	nowFrameNumber = 0;
-	nowState = std::make_shared<Idle>(modelHandle, oldAnimState, nowAnimState, playerData);
+    nowState = std::make_shared<Idle>(modelHandle, oldAnimState, nowAnimState, playerData);
 	animationChacger = std::make_shared<AnimationChanger>();
     playerCalculation = std::make_shared<PlayerCalculation>();
 
@@ -35,6 +35,11 @@ Player::~Player()
 /// </summary>
 void Player::Initialize()
 {
+    playerData = { false };
+    playerData.isIdle = true;
+    nowState = std::move(animationChacger->ChangeState(modelHandle, playerData, nowState));
+    nowState->Initialize(modelHandle);
+
     positionData.position_bottom = position;
     positionData.position_top = MV1GetFramePosition(modelHandle, 6);
 }

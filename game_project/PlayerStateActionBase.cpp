@@ -149,6 +149,13 @@ VECTOR PlayerStateActionBase::Move(const VECTOR& cameraDirection, PlayerData& pl
 
 }
 
+void PlayerStateActionBase::Aim(PlayerData& playerData)
+{
+    if (PadInput::isAim())
+    {
+        playerData.isAim = true;
+    }
+}
 
 void PlayerStateActionBase::SetOldAnimState()
 {

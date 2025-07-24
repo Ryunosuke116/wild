@@ -39,7 +39,7 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
     }
 
     //走る
-    if (playerData.isRun && animNumber_Now != animNum::standing_Run)
+    if (playerData.isRun && animNumber_Now != animNum::standard_Run)
     {
         //nowState内のアニメーション情報を保存
         SetNowAnimState(nowState->GetNowAnimState());
@@ -50,10 +50,37 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
             nowAnimState, playerData);
 
         newState->SetAnimNumber_old(animNumber_Now);
-        animNumber_Now = animNum::standing_Run;
+        animNumber_Now = animNum::standard_Run;
     }
 
-    if(newState) return newState;
+    //ジャンプ
+    if (playerData.isJump &&
+        animNumber_Now != animNum::jump &&
+        animNumber_Now != animNum::runJump &&
+        animNumber_Now != animNum::standing_Jump_up)
+    {
+        //nowState内のアニメーション情報を保存
+        SetNowAnimState(nowState->GetNowAnimState());
+        SetOldAnimState(nowState->GetOldAnimState());
+
+        //newStateを生成
+        newState = std::make_shared<Jump>(modelHandle, oldAnimState,
+            nowAnimState, playerData);
+
+        newState->SetAnimNumber_old(animNumber_Now);
+        animNumber_Now = animNum::jump;
+    }
+
+    //弓を構える
+    if (playerData.isAim && animNumber_Now != animNum::standing_Draw_Arrow)
+    {
+    }
+
+    if (newState)
+    {
+        newState->Initialize(modelHandle);
+        return newState;
+    }
 
     return nowState;
 }

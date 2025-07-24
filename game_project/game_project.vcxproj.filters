@@ -100,6 +100,9 @@
     <Filter Include="ソース ファイル\gameTimer">
       <UniqueIdentifier>{5ec3e14a-9720-4645-a0c9-f6544a04b772}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\player\state\jump">
+      <UniqueIdentifier>{d6e51cf7-29e2-4b6a-882e-1e14d7e1a7b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -179,6 +182,9 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>ソース ファイル\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Jump.cpp">
+      <Filter>ソース ファイル\player\state\jump</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -269,9 +275,6 @@
     <ClInclude Include="Run_standard.h">
       <Filter>ソース ファイル\player\state\run</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>ソース ファイル\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionData.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -280,6 +283,12 @@
     </ClInclude>
     <ClInclude Include="GameTimer.h">
       <Filter>ソース ファイル\gameTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Jump.h">
+      <Filter>ソース ファイル\player\state\jump</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

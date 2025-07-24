@@ -23,6 +23,8 @@ public:
 		AnimState& oldAnimState, AnimState& nowAnimState);
 	~PlayerStateActionBase() {};
 
+	virtual void Initialize(int& modelHandle)abstract;
+
 	virtual bool MotionUpdate(PlayerData& playerData);
 	virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)abstract;
@@ -30,6 +32,7 @@ public:
 	virtual void Enter(PlayerData& playerData) abstract;		//ó‘Ô‚É“ü‚Á‚½‚Æ‚«
 	virtual void Exit(PlayerData& playerData) abstract;			//ó‘Ô‚ğ”²‚¯‚é‚Æ‚«
 	virtual VECTOR Move(const VECTOR& cameraDirection, PlayerData& playerData);
+	virtual void Aim(PlayerData& playerData);
 
 	void SetOldAnimState();
 	void ResetOldAnimState();
@@ -58,6 +61,7 @@ protected:
 	float animBlendRate;
 	int animNumber_old;
 	bool isPush;
+	bool isMove_Bow;			//‹|‚ğ\‚¦‚Ä‚¢‚é‚©
 
 	AnimState oldAnimState;
 	AnimState nowAnimState;

@@ -11,7 +11,8 @@ public:
 		AnimState& nowAnimState, PlayerData& playerData);
 	~Idle();
 
-	//bool MotionUpdate(PlayerData& playerData)override;
+	void Initialize(int& modelHandle)override;
+	
 	std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)override;
 
@@ -19,7 +20,7 @@ public:
 	void Exit(PlayerData& playerData) override;			//èÛë‘Çî≤ÇØÇÈÇ∆Ç´
 
 	VECTOR Command(const VECTOR& cameraDirection, PlayerData& playerData, Player& player)override;
-	//VECTOR Move(const VECTOR& cameraDirection, PlayerData& playerData)override;
+	
 	void JumpMove(PlayerData& playerData,Player& player);
 
 private:

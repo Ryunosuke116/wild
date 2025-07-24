@@ -38,7 +38,7 @@ public:
 	static bool isRight();
 	static bool isLeft();
 	static bool isJump();
-	static bool isRoll();
+	static bool isAim();
 	static float GetJoyPad_x_left();
 	static float GetJoyPad_y_left();
 	static float GetJoyPad_x_right();

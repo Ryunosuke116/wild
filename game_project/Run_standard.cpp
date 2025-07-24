@@ -16,11 +16,7 @@ Run_standard::Run_standard(int& modelHandle,
     AnimState& oldAnimState, AnimState& nowAnimState, PlayerData& playerData) :
     PlayerStateActionBase(modelHandle, oldAnimState, nowAnimState)
 {
-    // ３Ｄモデルの０番目のアニメーションをアタッチする
-    this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum::standing_Run);
 
-    this->nowAnimState.PlayTime_anim = 0.0f;
-    this->nowAnimState.PlayAnimSpeed = playAnimSpeed;
 }
 
 /// <summary>
@@ -31,6 +27,17 @@ Run_standard::~Run_standard()
     //  MV1DetachAnim(modelHandle, this->nowAnimState.AttachIndex);
 }
 
+/// <summary>
+/// 初期化
+/// </summary>
+void Run_standard::Initialize(int& modelHandle)
+{
+    // ３Ｄモデルの０番目のアニメーションをアタッチする
+    this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum::standard_Run);
+
+    this->nowAnimState.PlayTime_anim = 0.0f;
+    this->nowAnimState.PlayAnimSpeed = playAnimSpeed;
+}
 
 std::pair<VECTOR, PlayerData> Run_standard::Update(const VECTOR& cameraDirection,
     const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)
@@ -80,6 +87,7 @@ void Run_standard::JumpMove(PlayerData& playerData, Player& player)
         //ジャンプ
         if (!player.playerCalculation->GetIsJumpPower_add() && !isPush)
         {
+            playerData.isJump = true;
             isPush = true;
             player.playerCalculation->ChangeIsJumpPower_add_ture();
             player.playerCalculation->SetJumpPower();

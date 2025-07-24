@@ -4,8 +4,12 @@ enum animNum : int
 {
 	fast_run,						//速く走る
 	idle,							//通常
-	standing_Run,					//走る
-	standing_Am_OverDraw,			//構える
+	jump,							//通常ジャンプ
+	standing_Jump_down,				//構えながらジャンプ
+	runJump,						//ランジャンプ
+	standing_Jump_up,				//構えながらジャンプ
+	standard_Run,					//走る
+	standing_Aim_OverDraw,			//構える
 	standing_Aim_Recoil,			//放つ
 	standing_Aim_Walk_Back,			//構えながら歩く(後)
 	standing_Aim_Walk_Forward,		//構えながら歩く(前)

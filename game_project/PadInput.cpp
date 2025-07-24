@@ -97,7 +97,7 @@ bool PadInput::isJump()
 /// </summary>
 /// <param name="input"></param>
 /// <returns></returns>
-bool PadInput::isRoll()
+bool PadInput::isAim()
 {
     if (CheckHitKey(KEY_INPUT_F) ||
         input->GetNowFrameNewInput() & PAD_INPUT_R)

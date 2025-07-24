@@ -27,7 +27,7 @@ public:
 private:
 	static constexpr float MaxMoveSpeed = 1.6f;	    // 移動速度
 	static constexpr float rollMoveSpeed_max = 2.5f;	//ロール速度
-	static constexpr float addJumpPower = 1.6f;		//ジャンプパワー
+	static constexpr float addJumpPower = 1.2f;		//ジャンプパワー
 	static constexpr float gravity = -0.06f;
 
 	float jumpPower_now;			//現在のジャンプスピード
