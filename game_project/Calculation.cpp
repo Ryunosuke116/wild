@@ -182,6 +182,7 @@ VECTOR Calculation::ProjectionDirection(const VECTOR& point, const VECTOR& a, co
 	return AX;
 }
 
+
 /// <summary>
 /// ÉâÅ[Év
 /// </summary>

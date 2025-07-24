@@ -2,6 +2,7 @@
 #include "GameObjectManager.h"
 #include "SceneManager.h"
 #include "BaseScene.h"
+#include "GameTimer.h"
 #include "Game.h"
 
 /// <summary>
@@ -11,6 +12,7 @@
 Game::Game(SceneManager& manager) :BaseScene{ manager }
 {
 	gameObjectManager = std::make_shared<GameObjectManager>();
+	gameTimer		  = std::make_shared<GameTimer>();
 	gameObjectManager->Create();
 }
 
@@ -35,8 +37,10 @@ void Game::Initialize()
 /// </summary>
 void Game::Update()
 {
+	gameTimer->Update();
 	PadInput::Update();
-	gameObjectManager->Update();
+	gameObjectManager->Update(gameTimer->GetDeltaTime());
+
 }
 
 void Game::Draw()

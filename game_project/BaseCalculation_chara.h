@@ -2,9 +2,12 @@
 class BaseCalculation_chara
 {
 public:
-	float Gravity(const bool& isGround, const float& jumpPower);
+	VECTOR Gravity(const bool& isGround, const VECTOR& moveVec);
 
-private:
-	static constexpr float gravity = -0.06f;
+protected:
+	static constexpr float gravity = -0.02f;
+
+	float velocity_gravity;
+	float deltaTime;
 };
 

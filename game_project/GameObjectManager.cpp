@@ -27,15 +27,15 @@ void GameObjectManager::Create()
 
 	skyDome = std::make_shared<SkyDome>("material/skyDome/sunSet.mv1");
 	field = std::make_shared<Field>("material/mv1/field.mv1");
-	playerManager = std::make_shared<PlayerManager>();
+	characterManager = std::make_shared<CharacterManager>();
 	camera = std::make_shared<Camera>();
 
 	skyDome_actual = std::dynamic_pointer_cast<SkyDome>(skyDome);
-	playerManager_actual = std::dynamic_pointer_cast<PlayerManager>(playerManager);
+	characterManager_actual = std::dynamic_pointer_cast<CharacterManager>(characterManager);
 
 	fieldObjects.push_back(std::make_shared<Field>("material/mv1/field.mv1"));
 
-	playerManager->Create();
+	characterManager->Create();
 
 }
 
@@ -52,7 +52,7 @@ void GameObjectManager::Initialize()
 
 	skyDome->Initialize();
 	field->Initialize();
-	playerManager->Initialize();
+	characterManager->Initialize();
 	camera->Initialize();
 	PadInput::Initialize();
 
@@ -64,7 +64,7 @@ void GameObjectManager::Initialize()
 /// <summary>
 /// XV
 /// </summary>
-void GameObjectManager::Update()
+void GameObjectManager::Update(const float& gameTimer)
 {
 	if (CheckHitKey(KEY_INPUT_0))
 	{
@@ -89,10 +89,10 @@ void GameObjectManager::Update()
 
 	if (!isCamera)
 	{
-		camera->Update(playerManager_actual->GetPlayer()->GetPosition(), fieldObjects);
+		camera->Update(characterManager_actual->GetPlayer()->GetPosition(), fieldObjects);
 
-		playerManager_actual->Update(fieldObjects, camera->GetCameraDirection());
-		skyDome_actual->Update(playerManager_actual->GetPlayer()->GetPosition());
+		characterManager_actual->Update(fieldObjects, camera->GetCameraDirection(), gameTimer);
+		skyDome_actual->Update(characterManager_actual->GetPlayer()->GetPosition());
 		field->Update();
 		for (auto& feildObject : fieldObjects)
 		{
@@ -111,7 +111,7 @@ void GameObjectManager::Update()
 /// </summary>
 bool GameObjectManager::Draw()
 {
-	playerManager->Draw();
+	characterManager->Draw();
 	camera->Draw();
 	skyDome->Draw();
 	field->Draw();

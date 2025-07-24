@@ -209,3 +209,9 @@ void BaseChara::MotionUpdate()
         MV1SetAttachAnimBlendRate(modelHandle, prevAttachIndex, 1.0f - animBlendRate);
     }
 }
+
+void BaseChara::PositionUpdate()
+{
+    // プレイヤーのモデルの座標を更新する
+    MV1SetPosition(modelHandle, position);
+}

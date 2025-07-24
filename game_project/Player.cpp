@@ -17,6 +17,9 @@ Player::Player()
 	nowState = std::make_shared<Idle>(modelHandle, oldAnimState, nowAnimState, playerData);
 	animationChacger = std::make_shared<AnimationChanger>();
     playerCalculation = std::make_shared<PlayerCalculation>();
+
+    positionData.position_bottom = VGet(0.0f, 0.0f, 0.0f);
+    positionData.position_top = VGet(0.0f, 0.0f, 0.0f);
 }
 
 /// <summary>
@@ -32,15 +35,23 @@ Player::~Player()
 /// </summary>
 void Player::Initialize()
 {
-
+    positionData.position_bottom = position;
+    positionData.position_top = MV1GetFramePosition(modelHandle, 6);
 }
 
 /// <summary>
 /// 更新
 /// </summary>
-void Player::Update(const VECTOR& cameraDirection,
+void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
 	const std::vector<std::shared_ptr<BaseObject>>& fieldObjects)
 {
+    positionData.position_bottom = position;
+    positionData.position_top = MV1GetFramePosition(modelHandle, 6);
+
+    //調整
+    positionData.position_top.x = positionData.position_bottom.x;
+    positionData.position_top.z = positionData.position_bottom.z;
+    positionData.position_bottom.y -= 0.1f;
 
 	if (CheckHitKey(KEY_INPUT_3))
 	{
@@ -51,28 +62,32 @@ void Player::Update(const VECTOR& cameraDirection,
 		nowFrameNumber--;
 	}
 
-    moveVec = VGet(0.0f, 0.0f, 0.0f);
+    moveDirection = VGet(0.0f, 0.0f, 0.0f);
 
     //stateに応じた挙動処理
-    auto [moveVec_new, data_new] = nowState->Update(cameraDirection, fieldObjects, *this);
+    auto [moveDirection_new, data_new] = nowState->Update(cameraDirection, fieldObjects, *this);
 
-    moveVec = moveVec_new;
+    moveDirection = moveDirection_new;
     playerData = data_new;
+
+    //0でなければ方向更新
+    if (VSize(moveDirection) != 0)
+    {
+        moveDirection_now = moveDirection;
+    }
     
     //move計算
-    moveVec = playerCalculation->Update(moveVec,
+    moveVec = playerCalculation->Update(moveDirection,
         nowState->GetNowAnimState().PlayTime_anim,
-        animationChacger->GetAnimNumber_now(), playerData);
+        animationChacger->GetAnimNumber_now(), playerData,deltaTime);
 
-    position = VAdd(position, moveVec);
-
-    // プレイヤーのモデルの座標を更新する
-    MV1SetPosition(modelHandle, position);
-
+    //state変更
     ChengeState();
 
+    //アニメーション更新
     nowState->MotionUpdate(playerData);
 
+    UpdateAngle(moveDirection_now, playerData.isTurn_right);
 
 	//矢先 5
 	//持ち手（?）2
@@ -87,10 +102,13 @@ bool Player::Draw()
 
 	VECTOR nowFrame = MV1GetFramePosition(modelHandle, nowFrameNumber);
 
-	DrawSphere3D(nowFrame, 2.0f, 30, GetColor(0, 0, 0),
-		GetColor(255, 0, 255), FALSE);
+	DrawSphere3D(position, 2.0f, 30, GetColor(0, 0, 0),
+		GetColor(255, 0, 0), FALSE);
 
+    printfDx("playerPosition.x %f\nplayerPosition.y %f\nplayerPosition.z %f\n",
+        position.x, position.y, position.z);
 	printfDx("frame現在数%d\n", nowFrameNumber);
+    printfDx("isGround %d\n", playerData.isGround);
 	return false;
 }
 
@@ -163,13 +181,21 @@ void Player::JumpMove(PlayerData& playerData)
         {
             isPush = true;
             playerCalculation->ChangeIsJumpPower_add_ture();
-            playerCalculation->SetJumpPower_now();
+            playerCalculation->SetJumpPower();
         }
     }
     else
     {
         isPush = false;
     }
+}
+
+
+void Player::Receive_CollisionResult()
+{
+    playerData.isGround = collision_result.isHitGround;
+    position = collision_result.position_new;
+    playerData.isHitWall = collision_result.isHitWall;
 }
 
 void Player::Update(){}

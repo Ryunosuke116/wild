@@ -6,22 +6,37 @@
 PlayerCalculation::PlayerCalculation()
 {
     isJumpPower_add = false;
+    jumpPower_now = 0.0f;
+    deltaTime = 0.0f;
+    velocity_gravity = 0.0f;
+    moveSpeed_now = 0.0f;
+    decelerationSpeed = 0.0f;
+    moveVec_old = VGet(0.0f, 0.0f, 0.0f);
 }
 
-VECTOR PlayerCalculation::Update(const VECTOR& moveDirection, const float playTime_anim,
-    const int& animNumber_Now, const PlayerData& playerData)
+VECTOR PlayerCalculation::Update(const VECTOR& moveDirection,
+    const float playTime_anim, const int& animNumber_Now,
+    const PlayerData& playerData,const float& deltaTime_new)
 {
-    VECTOR returnVec = moveDirection;
+    VECTOR moveVec = moveDirection;
+    deltaTime = deltaTime_new;
 
-    returnVec = Move(returnVec, playerData);
+    moveVec = Move(moveVec, playerData);
 
-    //ジャンプ計算
-    returnVec = Jump(returnVec, animNumber_Now, playerData);
+    //重力だけ前フレームのモノを使用
+    moveVec.y = moveVec_old.y;
 
     //重力計算
-    jumpPower_now = Gravity(playerData.isGround, jumpPower_now);
+    moveVec = Gravity(playerData.isGround, moveVec);
 
-    return returnVec;
+    //ジャンプ計算
+    moveVec = Jump(moveVec, animNumber_Now, playerData);
+
+
+    //moveVecを保存
+    moveVec_old = moveVec;
+
+    return moveVec;
 }
 
 VECTOR PlayerCalculation::Move(const VECTOR& moveDirection, const PlayerData& playerData)
@@ -78,20 +93,20 @@ VECTOR PlayerCalculation::Move(const VECTOR& moveDirection, const PlayerData& pl
         }
     }
 
-    return VScale(moveDirection, moveSpeed_now);
+    //deltaTime計算
+    float velocity = moveSpeed_now;
+
+    return VScale(moveDirection, velocity);
 }
 
 VECTOR PlayerCalculation::Jump(const VECTOR& moveVec, const int& animNumber_Now,const PlayerData& playerData)
 {
     VECTOR move = moveVec;
 
-    if (isJumpPower_add)
+    if (isJumpPower_add && playerData.isGround)
     {
         move.y += jumpPower_now;
-    }
-    else if (!playerData.isGround)
-    {
-        move.y += jumpPower_now;
+        isJumpPower_add = false;
     }
 
     return move;

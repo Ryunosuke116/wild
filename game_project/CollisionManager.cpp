@@ -1,37 +1,55 @@
 #include "common.h"
+#include <vector>
+#include <utility>
 #include "HitCheck.h"
 #include "Calculation.h"
+#include "common.h"
 #include "PlayerStateActionBase.h"
-
 #include "CollisionManager.h"
-#include <utility>
-#include <vector>
 #include "PlayerData.h"
+
+
+void CollisionManager::Update(std::vector<std::shared_ptr<BaseChara>>& characters,
+	const std::vector<std::shared_ptr<BaseObject>>& fieldObjects)
+{
+	for (auto& chara : characters)
+	{
+		chara->SetCollision_result(Check_all(fieldObjects,
+			chara->GetPosition(), chara->GetMoveVec(), chara->GetRadius(),
+			chara->GetPositionData()));
+	}
+}
 
 /// @brief çXêV
 /// @param player 
 /// @param modelHandle 
 /// @return 
-CollisionResult CollisionManager::Update(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
-	const VECTOR& playerPos, const VECTOR& moveVec,
-	const PositionData& positionData,
-	const PlayerData& playerData)
+CollisionResult CollisionManager::Check_all (const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
+	const VECTOR& playerPos, const VECTOR& moveVec,const float& radius,
+	const PositionData& positionData)
 {
 	VECTOR oldPos = playerPos;
 	VECTOR newPos = VAdd(oldPos, moveVec);
 
+	CollisionResult result;
+
 	//ï«è’ìÀîªíË
-	auto hitWall = WallCollisionCheck(fieldObjects, newPos, oldPos, positionData);
+	auto hitWall = WallCollisionCheck(fieldObjects, newPos, moveVec, positionData, radius);
 
 	//ì™è„è’ìÀîªíË
-	HeadCollisionCheck(fieldObjects, newPos, positionData);
+	HeadCollisionCheck(fieldObjects, newPos, moveVec, positionData, radius);
 
 	//è∞è’ìÀîªíË
-	auto returnGround = GroundCollisionCheck(fieldObjects, oldPos, newPos, positionData, playerData);
+	auto returnGround = GroundCollisionCheck(fieldObjects, newPos, moveVec, positionData);
 
 	//è∞è’ìÀîªíË
-	return std::make_tuple(returnGround.first, hitWall.first,
-		hitWall.second, newPos, returnGround.second);
+	return { 
+		newPos,
+		returnGround.first,
+		hitWall.first,
+		hitWall.second,
+		returnGround.second
+	};
 }
 
 /// <summary>
@@ -43,15 +61,17 @@ CollisionResult CollisionManager::Update(const std::vector<std::shared_ptr<BaseO
 /// <param name="positionData.radius"></param>
 /// <param name="positionData.addBottomPos"></param>
 /// <returns></returns>
-bool CollisionManager::HeadCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, VECTOR& newPos,
-	const PositionData& positionData,const float& radius)
+bool CollisionManager::HeadCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
+	VECTOR& newPos, const VECTOR& moveVec, const PositionData& positionData,const float& radius)
 {
 	MV1_COLL_RESULT_POLY_DIM hitPoly_head;
+	VECTOR position_top_new = VAdd(positionData.position_top, moveVec);
+	VECTOR position_bottom_new = VAdd(positionData.position_bottom, moveVec);
 
 	//fieldObjectÇÃóvëfï™ämîF
 	for (auto& fieldObject : fieldObjects)
 	{
-		bool isHitHead = HitCheck::SphereHitJudge(fieldObject->GetModelHandle(), -1, topPos, hitPoly_head);
+		bool isHitHead = HitCheck::SphereHitJudge(fieldObject->GetModelHandle(), -1, position_top_new, hitPoly_head);
 
 		if (isHitHead)
 		{
@@ -68,13 +88,13 @@ bool CollisionManager::HeadCollisionCheck(const std::vector<std::shared_ptr<Base
 				/////////////////////////////////////////
 				if (poly.Normal.y <= -0.7f || poly.Normal.y >= 0.7f)
 				{
-					hitPos_head = HitCheck::ClosestPtToPointTriangle(topPos, poly.Position[0], poly.Position[1], poly.Position[2]);
+					hitPos_head = HitCheck::ClosestPtToPointTriangle(position_top_new, poly.Position[0], poly.Position[1], poly.Position[2]);
 
-					VECTOR hitDirection = VSub(hitPos_head, topPos);
+					VECTOR hitDirection = VSub(hitPos_head, position_top_new);
 					hitDirection = VNorm(hitDirection);
 					hitDirection = VScale(hitDirection, radius);
 
-					VECTOR hitPos_sphere = VAdd(topPos, hitDirection);
+					VECTOR hitPos_sphere = VAdd(position_top_new, hitDirection);
 
 
 					newAddPos.y = hitPos_head.y - hitPos_sphere.y;
@@ -105,46 +125,32 @@ bool CollisionManager::HeadCollisionCheck(const std::vector<std::shared_ptr<Base
 /// <param name="positionData.radius"></param>
 /// <param name="isJump"></param>
 /// <returns></returns>
-std::pair<bool, std::string> CollisionManager::GroundCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, const VECTOR& oldPos,
-	VECTOR& newPos, const PositionData& positionData,
-	const PlayerData& playerData)
+std::pair<bool, std::string> CollisionManager::GroundCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
+	VECTOR& newPos, const VECTOR& moveVec, const PositionData& positionData)
 {
-	//playerÇÃèÛë‘Ç…ÇÊÇ¡ÇƒìñÇΩÇËîªíËÇÃóDêÊèáà ÇåàÇﬂÇÈ
-	//âΩâÒÇ©ìñÇΩÇËîªíËÇåJÇËï‘Ç∑
-	//prevÇ∆newÇÃposÇçÏÇÈ
-	VECTOR topPosition = newPos;
-	VECTOR bottomPosition = newPos;
-	VECTOR nowBottomPos = oldPos;
-	VECTOR nowTopPos = oldPos;
-	bool isHitSphere;
-
-	topPosition.y = topPosition.y + 13.0f;
-	nowTopPos.y = nowTopPos.y + 13.0f;
-
-	//Å¶ÉWÉÉÉìÉvÇµÇƒÇ¢ÇÈä‘Ç≈ÇÕÇ»Ç≠óéâ∫íÜÇ…ÇµÇΩÇ¢
-	if (playerData.isFalling || playerData.isJump)
-	{
-		nowBottomPos.y = newPos.y;
-	}
-	else
-	{
-		nowBottomPos.y = newPos.y - 5.0f;
-	}
-
 	bool isHitGround = false;
 	bool returnFlag = false;
 	std::string returnTag = "";
+
+	VECTOR position_top_new = VAdd(positionData.position_top, moveVec);
+	VECTOR position_bottom_new = VAdd(positionData.position_bottom, moveVec);
+
+	topPos_ray = position_top_new;
+	bottomPos_ray = position_bottom_new;
 
 	MV1_COLL_RESULT_POLY rayPoly_ground;
 
 	for (const auto& fieldObject : fieldObjects)
 	{
 		//rayÇ™ìñÇΩÇ¡ÇƒÇ¢ÇÍÇŒ
-		isHitGround = HitCheck::HitRayJudge(fieldObject->GetModelHandle(), -1, topPosition, nowBottomPos, rayPoly_ground);
+		isHitGround = HitCheck::HitRayJudge(fieldObject->GetModelHandle(), -1, position_top_new,
+			position_bottom_new, rayPoly_ground);
 
 		if (isHitGround)
 		{
-			VECTOR playerNormal = VSub(topPosition, bottomPosition);
+			VECTOR playerNormal = VSub(position_top_new,
+				position_bottom_new);
+
 			playerNormal = VNorm(playerNormal);
 
 			//playerÇ∆è∞ÇÃÇ»Ç∑äpÇãÅÇﬂÇÈ
@@ -165,10 +171,6 @@ std::pair<bool, std::string> CollisionManager::GroundCollisionCheck(const std::v
 			returnTag = fieldObject->GetTag();
 		}
 	}
-
-	//logóp
-	topPos_ray = topPosition;
-	bottomPos_ray = nowBottomPos;
 
 	//ê⁄ínÇµÇƒÇ¢ÇÈÇ©
 	return std::make_pair(returnFlag, returnTag);
@@ -197,12 +199,6 @@ std::pair<bool, VECTOR> CollisionManager::GroundCollisionCheck_Hang_to_Crouch(co
 	VECTOR nowBottomPos = oldPos;
 	VECTOR nowTopPos = oldPos;
 	bool isHitSphere;
-
-	newTopPosition.y = newTopPosition.y + positionData.addTopPos;
-	nowTopPos.y = nowTopPos.y + positionData.addTopPos;
-	newBottomPosition.y = newBottomPosition.y + positionData.addBottomPos;
-
-	nowBottomPos.y = nowBottomPos.y + positionData.addBottomPos - positionData.radius;
 
 	bool isHitGround = false;
 
@@ -236,28 +232,20 @@ std::pair<bool, VECTOR> CollisionManager::GroundCollisionCheck_Hang_to_Crouch(co
 /// <param name="player"></param>
 /// <param name="modelHandle"></param>
 /// <returns></returns>
-std::pair<bool, VECTOR> CollisionManager::WallCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, VECTOR& newPos,
-	VECTOR& oldPos, const PositionData& positionData)
+std::pair<bool, VECTOR> CollisionManager::WallCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, 
+	VECTOR& newPos, const VECTOR& moveVec, const PositionData& positionData,
+	const float& radius)
 {
-
-	VECTOR topPosition = newPos;
-	VECTOR bottomPosition = newPos;
-	VECTOR topPos_now = oldPos;
-	topPosition.y = topPosition.y + positionData.addTopPos;
-	bottomPosition.y = bottomPosition.y + positionData.addBottomPos;
-	topPos_now.y += positionData.addTopPos;
-
-	pos_new = topPosition;
-	pos_now = topPos_now;
-
+	VECTOR position_top_new = VAdd(positionData.position_top, moveVec);
+	VECTOR position_bottom_new = VAdd(positionData.position_bottom, moveVec);
 	bool flag = false;
 	VECTOR hitPoly_normal;
 
 	for (auto& fieldObject : fieldObjects)
 	{
 		//ï«Ç∆è’ìÀÇµÇƒÇ¢ÇÈÇ©
-		HitCheck::CapsuleHitWallJudge(fieldObject->GetModelHandle(), -1, positionData.radius, topPosition,
-			VAdd(bottomPosition, VGet(0.0f, 1.0f, 0.0f)), hitPoly_Wall);
+		HitCheck::CapsuleHitWallJudge(fieldObject->GetModelHandle(), -1, radius, position_top_new,
+			VAdd(position_bottom_new, VGet(0.0f, 1.0f, 0.0f)), hitPoly_Wall);
 
 		//è’ìÀÇµÇƒÇ¢ÇÈÇ∆Ç±ÇëSïîí≤Ç◊ÇƒâüÇµñﬂÇµó ÇåvéZÇ∑ÇÈ
 		if (hitPoly_Wall.HitNum >= 1)
@@ -280,20 +268,13 @@ std::pair<bool, VECTOR> CollisionManager::WallCollisionCheck(const std::vector<s
 					poly.Normal.x <= -0.7f || poly.Normal.z <= -0.7f) &&
 					poly.Normal.y <= 0.7f)
 				{
-
-					//ÉJÉvÉZÉãÇÃëÂÇ´Ç≥
-					topPosition = newPos;
-					bottomPosition = newPos;
-					topPosition.y = topPosition.y + positionData.addTopPos;
-					bottomPosition.y = bottomPosition.y + positionData.addBottomPos;
-
 					normal = poly.Normal;
 					normal.y = 0.0f;
 					normal = VNorm(normal);
 
 					//ê¸ï™ÇÃÇ«Ç±Ç…ìñÇΩÇ¡ÇΩÇ©
-					auto result = HitCheck::SegmentTriangleDistance(topPosition,
-						bottomPosition, poly.Position[0], poly.Position[1],
+					auto result = HitCheck::SegmentTriangleDistance(position_top_new,
+						position_bottom_new, poly.Position[0], poly.Position[1],
 						poly.Position[2], poly.Normal);
 
 					VECTOR addPos = VScale(poly.Normal, -3.5f);
@@ -404,28 +385,7 @@ bool CollisionManager::TestSphereTriangle(VECTOR centerPos, VECTOR a, VECTOR b, 
 	//ãÖÇ∆éOäpå`Ç™åç∑Ç∑ÇÈÇÃÇÕÅAãÖÇÃíÜêSÇ©ÇÁì_qÇ‹Ç≈ÇÃ(ïΩï˚ÇµÇΩ)ãóó£Ç™(ïΩï˚ÇµÇΩ)ãÖÇÃîºåaÇÊÇËÇ‡è¨Ç≥Ç¢èÍçá
 	VECTOR v = VSub(q, centerPos);
 
-	return VDot(v, v) <= positionData.radius * positionData.radius;
-}
-
-VECTOR CollisionManager::PushBackCalculation_sphere_mesh(const MV1_COLL_RESULT_POLY& poly, const VECTOR& bottomPos, const VECTOR& newPlayerPos, const float& radius)
-{
-	//ãÖÇ∆ñ ÇÃê⁄êGÇµÇƒÇ¢ÇÈÇÕãÖÇÃç≈â∫ïîÇ∆ñ ÇÃê⁄êGç¿ïWÇ∆ìØÇ∂Ç»ÇÃÇ≈ÉäÉZÉbÉg
-	hitSphere = VGet(0.0f, 0.0f, 0.0f);
-
-	////ïΩñ Ç≈Ç†ÇÍÇŒÇªÇÃÇ‹Ç‹ë´å≥Ç≈åvéZ
-	//if (poly.Normal.y >= 1.0f)
-	//{
-	//	VECTOR footPos = VGet(0.0f, bottomPos.y - positionData.radius, 0.0f);
-
-	//	newPlayerPos.y = hitPos_ground.y - footPos.y;
-
-	//	//âüÇµñﬂÇµó Ç™àÍî‘ëÂÇ´Ç¢Ç‡ÇÃÇâ¡éZÇ∑ÇÈ
-	//	if (addPos.y < newPlayerPos.y)
-	//	{
-	//		addPos = newPlayerPos;
-	//	}
-	//}
-	return hitSphere;
+	return VDot(v, v) <= radius * radius;
 }
 
 
@@ -440,7 +400,7 @@ VECTOR CollisionManager::CalcPushBack_SphereMeshOutsideTriangle(const MV1_COLL_R
 	hitSphere = VNorm(hitSphere);
 
 	//ê⁄êGì_ÇÃï˚å¸Ç…îºåaÇâ¡éZ
-	hitSphere = VScale(hitSphere, positionData.radius);
+	hitSphere = VScale(hitSphere, radius);
 
 	//ãÖÇÃíÜêSì_Ç©ÇÁê⁄êGì_ÇÃï˚å¸Ç…îºåaï™ÇÃÉxÉNÉgÉãÇâ¡éZÇµÇƒãÖÇÃê⁄êGì_ÇåvéZ
 	hitSphere = VAdd(bottomPos, hitSphere);

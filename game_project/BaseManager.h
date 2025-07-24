@@ -9,7 +9,7 @@ public:
 	//ƒˆ‰¼‘zŠÖ”	
 	virtual void Create() abstract;
 	virtual void Initialize() abstract;
-	virtual void Update() abstract;
+	virtual void Update(const float& gameTimer) abstract;
 	virtual bool Draw() abstract;
 
 };

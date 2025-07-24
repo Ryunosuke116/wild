@@ -13,7 +13,7 @@ public:
 
 	void Create()override;
 	void Initialize()override;
-	void Update()override;
+	void Update(const float& gameTimer)override;
 	bool Draw()override;
 
 private:
@@ -25,9 +25,9 @@ private:
 	std::shared_ptr<BaseObject>				skyDome = NULL;
 	std::shared_ptr<BaseObject>				field = NULL;
 	std::shared_ptr<Camera>					camera = NULL;
-	std::shared_ptr<BaseGameObjectManager>	playerManager = NULL;
+	std::shared_ptr<BaseGameObjectManager>	characterManager = NULL;
 
-	std::shared_ptr<PlayerManager>	playerManager_actual = NULL;
+	std::shared_ptr<CharacterManager>	characterManager_actual = NULL;
 	std::shared_ptr<SkyDome>		skyDome_actual		 = NULL;
 
 	bool isCamera;

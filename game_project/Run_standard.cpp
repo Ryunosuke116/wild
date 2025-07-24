@@ -82,7 +82,7 @@ void Run_standard::JumpMove(PlayerData& playerData, Player& player)
         {
             isPush = true;
             player.playerCalculation->ChangeIsJumpPower_add_ture();
-            player.playerCalculation->SetJumpPower_now();
+            player.playerCalculation->SetJumpPower();
         }
     }
     else

@@ -67,9 +67,6 @@
     <Filter Include="ソース ファイル\interFace">
       <UniqueIdentifier>{a06ed70f-7462-4c74-8376-63742bfcdcdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\manager\player">
-      <UniqueIdentifier>{a7bbb023-a042-4c19-aec2-99b9f2804b24}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\manager\collision">
       <UniqueIdentifier>{983115f9-bc2a-4e14-b476-f734ca0de0eb}</UniqueIdentifier>
     </Filter>
@@ -97,8 +94,11 @@
     <Filter Include="ソース ファイル\player\animation">
       <UniqueIdentifier>{b2216e5e-b4f1-424a-8dc5-a8dbd317adb7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Collision">
-      <UniqueIdentifier>{b2fe3827-e9d9-47de-9205-33d9443e03b1}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\manager\character">
+      <UniqueIdentifier>{a7bbb023-a042-4c19-aec2-99b9f2804b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\gameTimer">
+      <UniqueIdentifier>{5ec3e14a-9720-4645-a0c9-f6544a04b772}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,8 +150,8 @@
     <ClCompile Include="BaseGameObjectManager.cpp">
       <Filter>ソース ファイル\base\objectManager</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerManager.cpp">
-      <Filter>ソース ファイル\manager\player</Filter>
+    <ClCompile Include="CharacterManager.cpp">
+      <Filter>ソース ファイル\manager\character</Filter>
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>ソース ファイル\manager\collision</Filter>
@@ -236,11 +236,8 @@
     <ClInclude Include="ObjectManager_interface.h">
       <Filter>ソース ファイル\interFace</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerManager.h">
-      <Filter>ソース ファイル\manager\player</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>ソース ファイル\manager\collision</Filter>
+    <ClInclude Include="CharacterManager.h">
+      <Filter>ソース ファイル\manager\character</Filter>
     </ClInclude>
     <ClInclude Include="SkyDome.h">
       <Filter>ソース ファイル\skyDome</Filter>
@@ -274,6 +271,15 @@
     </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>ソース ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionData.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>ソース ファイル\manager\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.h">
+      <Filter>ソース ファイル\gameTimer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,54 +1,45 @@
 #pragma once
 #include "PlayerStateActionBase.h"
 #include "BaseObject.h"
+#include "BaseChara.h"
+#include "CollisionData.h"
 #include <vector>
 #include <string>
 
 class HitCheck;
+class BaseChara;
 
 class CollisionManager
 {
 public:
-	struct CollisionResult
-	{
-		VECTOR position_new;
-		bool isHitGround;
-		bool isHitWall;
-		bool isHitWall_normal;
-		std::string objectTag;
-	};
-
-	struct PositionData
-	{
-		VECTOR position_top;
-		VECTOR position_bottom;
-	};
 
 
 	//////////////////////////////////////////
 	//è’ìÀîªíË
 	/////////////////////////////////////////
-	std::pair<bool, std::string> GroundCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, const VECTOR& oldPos,
-		VECTOR& newPos, const PositionData& positionData,
-		const PlayerData& playerData);
+	std::pair<bool, std::string> GroundCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
+		VECTOR& newPos, const VECTOR& moveVec, const PositionData& positionData);
 
 	bool HeadCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, VECTOR& newPos,
-		const PositionData& positionData, const float& radius);
+		const VECTOR& moveVec, const PositionData& positionData, const float& radius);
 
-	std::pair<bool, VECTOR> WallCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, VECTOR& newPos,
-		VECTOR& oldPos, const PositionData& positionData);
+	std::pair<bool, VECTOR> WallCollisionCheck(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, 
+		VECTOR& newPos, const VECTOR& moveVec, const PositionData& positionData,
+		const float& radius);
 
 
-	CollisionResult Update(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
-		const VECTOR& playerPos,
-		const VECTOR& moveVec, const PositionData& positionData,
-		const PlayerData& playerData);
+	CollisionResult Check_all(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
+		const VECTOR& playerPos, const VECTOR& moveVec, const float& radius,
+		const PositionData& positionData);
+
+	void Update(std::vector<std::shared_ptr<BaseChara>>& characters,
+		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects);
 
 	bool TestSphereTriangle(VECTOR centerPos, VECTOR a, VECTOR b, VECTOR c, VECTOR& q, const float radius);
 
 	std::pair<bool, VECTOR> CliffGrabbing(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
 		const VECTOR& topPosition, const VECTOR& moveDirection, const bool isFalling);
-	VECTOR PushBackCalculation_sphere_mesh(const MV1_COLL_RESULT_POLY& poly, const VECTOR& bottomPos, const VECTOR& newPlayerPos, const float& radius);
+	
 	VECTOR CalcPushBack_SphereMeshOutsideTriangle(const MV1_COLL_RESULT_POLY& poly, const VECTOR& HitPos_ground, const VECTOR& bottomPos, const float& radius);
 
 	std::pair<bool, VECTOR>GroundCollisionCheck_Hang_to_Crouch(const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
@@ -59,6 +50,7 @@ public:
 
 	bool Draw();
 private:
+
 	MV1_COLL_RESULT_POLY hitPoly_Ground;
 	MV1_COLL_RESULT_POLY oldPoly;
 	MV1_COLL_RESULT_POLY HangingPoly;

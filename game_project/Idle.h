@@ -24,5 +24,9 @@ public:
 
 private:
 	static constexpr float playAnimSpeed = 0.4f;	    // ˆÚ“®‘¬“x
+	
+	bool isRun;
+	bool isJump;
+	bool isMove;
 };
 

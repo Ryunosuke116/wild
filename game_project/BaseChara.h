@@ -1,8 +1,16 @@
 #pragma once
+
+#include "CollisionData.h"
+
 class BaseChara
 {
 protected:
 
+	static constexpr float	MoveSpeed = 0.4f;	    // 移動速度
+	static constexpr float angleSpeed = 0.2f;
+	static constexpr float	AnimBlendSpeed = 0.1f;		// アニメーションのブレンド率変化速度
+	static constexpr float PlayAnimSpeed = 0.5f;	//アニメ再生速度
+	
 	int modelHandle;
 	int motionNum;
 	int HP;
@@ -23,15 +31,16 @@ protected:
 	float totalTime_anim;
 	float angle;
 	float rotate_x;
+	float radius;
 
 	VECTOR targetMoveDirection;
 	VECTOR framePosition;
 	VECTOR position;
+	VECTOR moveVec;
+	VECTOR moveDirection;
 
-	static constexpr float	MoveSpeed = 0.4f;	    // 移動速度
-	static constexpr float angleSpeed = 0.2f;
-	static constexpr float	AnimBlendSpeed = 0.1f;		// アニメーションのブレンド率変化速度
-	static constexpr float PlayAnimSpeed = 0.5f;	//アニメ再生速度
+	PositionData positionData;
+	CollisionResult collision_result;
 public:
 
 	BaseChara();
@@ -46,10 +55,23 @@ public:
 	virtual void MotionUpdate();
 	void UpdateAngle(const VECTOR& direction, bool& isTurn_right);
 
+	void PositionUpdate();
+
 	/////////////////////////////////////////////
 	// ゲッター
 	/////////////////////////////////////////////
-	const VECTOR GetPosition() { return position; }
-	const VECTOR GetFramePosition()const { return framePosition; }
+	VECTOR GetPosition() const { return position; }
+	VECTOR GetFramePosition()const { return framePosition; }
+	VECTOR GetMoveVec() { return moveVec; }
+	PositionData GetPositionData() const { return positionData; }
+	virtual float GetRadius()const abstract;
+
+	/////////////////////////////////////////////
+	// セッター
+	/////////////////////////////////////////////
+
+	void SetPositionData(const PositionData& newData) { positionData = newData; }
+	void SetCollision_result(const CollisionResult& newResult) { collision_result = newResult; }
 };
+
 

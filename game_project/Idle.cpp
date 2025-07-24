@@ -22,6 +22,9 @@ Idle::Idle(int& modelHandle,
 
     this->nowAnimState.PlayTime_anim = 0.0f;
     this->nowAnimState.PlayAnimSpeed = playAnimSpeed;
+    isRun = false;
+    isJump = false;
+    isMove = false;
 }
 
 /// <summary>
@@ -42,13 +45,13 @@ Idle::~Idle()
 std::pair<VECTOR,PlayerData> Idle::Update(const VECTOR& cameraDirection,
     const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)
 {
-    VECTOR moveVec = VGet(0.0f, 0.0f, 0.0f);
+    VECTOR moveDirection = VGet(0.0f, 0.0f, 0.0f);
 
     PlayerData playerData = player.GetData();
 
-    moveVec = Command(cameraDirection, playerData, player);
+    moveDirection = Command(cameraDirection, playerData, player);
 
-    return std::make_pair(moveVec, playerData);
+    return std::make_pair(moveDirection, playerData);
 }
 
 void Idle::Enter(PlayerData& playerData)
@@ -63,18 +66,18 @@ void Idle::Exit(PlayerData& playerData)
 
 VECTOR Idle::Command(const VECTOR& cameraDirection, PlayerData& playerData, Player& player)
 {
-    VECTOR returnPos = VGet(0.0f, 0.0f, 0.0f);
+    VECTOR moveDirection = VGet(0.0f, 0.0f, 0.0f);
 
     //moveDir‚ðŽæ“¾‚·‚é
-    returnPos = Move(cameraDirection, playerData);
+    moveDirection = Move(cameraDirection, playerData);
     JumpMove(playerData,player);
 
-    if (VSize(returnPos) != 0.0f)
+    if (VSize(moveDirection) != 0.0f)
     {
         playerData.isRun = true;
     }
 
-    return returnPos;
+    return moveDirection;
 }
 
 
@@ -90,7 +93,7 @@ void Idle::JumpMove(PlayerData& playerData, Player& player)
         {
             isPush = true;
             player.playerCalculation->ChangeIsJumpPower_add_ture();
-            player.playerCalculation->SetJumpPower_now();
+            player.playerCalculation->SetJumpPower();
         }
     }
     else

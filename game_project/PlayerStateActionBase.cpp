@@ -122,7 +122,7 @@ bool PlayerStateActionBase::Draw()
 /// <param name="moveVec"></param>
 VECTOR PlayerStateActionBase::Move(const VECTOR& cameraDirection, PlayerData& playerData)
 {
-    VECTOR returnPos = VGet(0.0f, 0.0f, 0.0f);
+    VECTOR moveDirection = VGet(0.0f, 0.0f, 0.0f);
     playerData.isMove = false;
     VECTOR rightMove = VCross(cameraDirection, VGet(0.0f, 1.0f, 0.0f));
 
@@ -134,18 +134,18 @@ VECTOR PlayerStateActionBase::Move(const VECTOR& cameraDirection, PlayerData& pl
     rightMove.y = 0.0f;
 
     //パッド or arrowキーの入力方向で計算
-    returnPos = VAdd(VScale(rightMove, -PadInput::GetJoyPad_x_left()),
+    moveDirection = VAdd(VScale(rightMove, -PadInput::GetJoyPad_x_left()),
         VScale(upMove, -PadInput::GetJoyPad_y_left()));
 
     //0でなければ正規化
-    if (VSize(returnPos) != 0)
+    if (VSize(moveDirection) != 0)
     {
-        returnPos = VNorm(returnPos);
+        moveDirection = VNorm(moveDirection);
         playerData.isMove = true;
     }
 
     //必ず正規化されたものか0を返す
-    return returnPos;
+    return moveDirection;
 
 }
 
