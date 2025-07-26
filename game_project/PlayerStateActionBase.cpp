@@ -123,6 +123,8 @@ bool PlayerStateActionBase::Draw()
 VECTOR PlayerStateActionBase::Move(const VECTOR& cameraDirection, PlayerData& playerData)
 {
     VECTOR moveDirection = VGet(0.0f, 0.0f, 0.0f);
+    VECTOR moveDirection_old = VGet(0.0f, 0.0f, 0.0f);
+
     playerData.isMove = false;
     VECTOR rightMove = VCross(cameraDirection, VGet(0.0f, 1.0f, 0.0f));
 
@@ -133,6 +135,10 @@ VECTOR PlayerStateActionBase::Move(const VECTOR& cameraDirection, PlayerData& pl
     upMove.y = 0.0f;
     rightMove.y = 0.0f;
 
+    //前フレームのパッドスティック情報
+    moveDirection_old = VAdd(VScale(rightMove, -PadInput::GetJoyPad_old_x_left()),
+        VScale(upMove, -PadInput::GetJoyPad_old_y_left()));
+
     //パッド or arrowキーの入力方向で計算
     moveDirection = VAdd(VScale(rightMove, -PadInput::GetJoyPad_x_left()),
         VScale(upMove, -PadInput::GetJoyPad_y_left()));
@@ -141,6 +147,16 @@ VECTOR PlayerStateActionBase::Move(const VECTOR& cameraDirection, PlayerData& pl
     if (VSize(moveDirection) != 0)
     {
         moveDirection = VNorm(moveDirection);
+    }
+
+    //前フレームと現在のフレームで入力されてなければ動いてない
+    if (VSize(moveDirection_old) == 0 &&
+        VSize(moveDirection) == 0)
+    {
+        playerData.isMove = false;
+    }
+    else
+    {
         playerData.isMove = true;
     }
 

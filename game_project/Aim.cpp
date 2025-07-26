@@ -150,13 +150,12 @@ bool Aim::MotionUpdate(PlayerData& playerData)
         if (arrowStateNum_now == ArrowState::draw &&
             nowAnimState.PlayTime_anim >= totalTime_anim)
         {
-            nowAnimState.PlayTime_anim = static_cast<float>(fmod(nowAnimState.PlayTime_anim, totalTime_anim));
             arrowStateNum_now = ArrowState::aim;
         }
 
         //エイム中
         // 再生時間が総時間を超えたら再生時間をループさせる
-        if (arrowStateNum_now == ArrowState::aim &&
+        else if (arrowStateNum_now == ArrowState::aim &&
             nowAnimState.PlayTime_anim >= totalTime_anim)
         {
             nowAnimState.PlayTime_anim = static_cast<float>(fmod(nowAnimState.PlayTime_anim, totalTime_anim));
@@ -164,7 +163,7 @@ bool Aim::MotionUpdate(PlayerData& playerData)
 
         //矢を放つとき
          // 再生時間が総時間を超えたら通常時に戻す
-        if (arrowStateNum_now == ArrowState::recoil && 
+        else if (arrowStateNum_now == ArrowState::recoil && 
             nowAnimState.PlayTime_anim >= totalTime_anim)
         {
             nowAnimState.PlayTime_anim = totalTime_anim;
@@ -247,18 +246,14 @@ void Aim::SwitchingAnimation(const int& animNum)
     //古い情報を削除
     if (this->oldAnimState.AttachIndex != -1)
     {
-        MV1DetachAnim(this->modelHandle, this->oldAnimState.AttachIndex);
+        MV1DetachAnim(modelHandle, this->oldAnimState.AttachIndex);
         this->oldAnimState.AttachIndex = -1;
     }
 
     ////いままで情報をprevに保存
-   // this->oldAnimState.AttachIndex = nowAnimState.AttachIndex;
+    this->oldAnimState.AttachIndex = nowAnimState.AttachIndex;
     this->oldAnimState.PlayTime_anim = nowAnimState.PlayTime_anim;
     animBlendRate = 0.0f;
-
-    //情報を削除
-    MV1DetachAnim(this->modelHandle, this->nowAnimState.AttachIndex);
-    this->nowAnimState.AttachIndex = -1;
 
     //アニメーションをアタッチ
     this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum);

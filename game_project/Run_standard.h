@@ -16,8 +16,8 @@ public:
 
 	void Enter(PlayerData& playerData) override;		//ó‘Ô‚É“ü‚Á‚½‚Æ‚«
 	void Exit(PlayerData& playerData) override;			//ó‘Ô‚ğ”²‚¯‚é‚Æ‚«
+
 	VECTOR Command(const VECTOR& cameraDirection, PlayerData& playerData, Player& player)override;
-	//VECTOR Move(const VECTOR& cameraDirection, PlayerData& playerData)override;
 	void JumpMove(PlayerData& playerData, Player& player);
 
 private:

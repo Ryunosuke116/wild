@@ -26,9 +26,9 @@ public:
 	virtual void Initialize(int& modelHandle, PlayerData& playerData)abstract;
 
 	virtual bool MotionUpdate(PlayerData& playerData);
-	virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
+	
+virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)abstract;
-
 	virtual void Enter(PlayerData& playerData) abstract;		//ó‘Ô‚É“ü‚Á‚½‚Æ‚«
 	virtual void Exit(PlayerData& playerData) abstract;			//ó‘Ô‚ğ”²‚¯‚é‚Æ‚«
 	virtual VECTOR Move(const VECTOR& cameraDirection, PlayerData& playerData);

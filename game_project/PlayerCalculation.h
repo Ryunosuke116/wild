@@ -21,6 +21,7 @@ public:
 	float GetmoveSpeed_now() const { return moveSpeed_now; }
 	float GetmoveSpeed_max() const { return MaxMoveSpeed; }
 	bool GetIsJumpPower_add()const { return isJumpPower_add; }
+
 	void SetJumpPower() { jumpPower_now = addJumpPower; }
 	void ChangeIsJumpPower_add_ture() { isJumpPower_add = true; }
 

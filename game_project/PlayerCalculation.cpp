@@ -32,7 +32,6 @@ VECTOR PlayerCalculation::Update(const VECTOR& moveDirection,
     //ƒWƒƒƒ“ƒvŒvŽZ
     moveVec = Jump(moveVec, animNumber_Now, playerData);
 
-
     //moveVec‚ð•Û‘¶
     moveVec_old = moveVec;
 
