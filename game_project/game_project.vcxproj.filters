@@ -61,14 +61,8 @@
     <Filter Include="ソース ファイル\hitCheck">
       <UniqueIdentifier>{a612d7e5-f024-43b8-8c96-037bb35b62bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\base\objectManager">
-      <UniqueIdentifier>{4a958fc0-283c-4626-a952-28ee5a0c3e66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\interFace">
       <UniqueIdentifier>{a06ed70f-7462-4c74-8376-63742bfcdcdf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\manager\collision">
-      <UniqueIdentifier>{983115f9-bc2a-4e14-b476-f734ca0de0eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\skyDome">
       <UniqueIdentifier>{27330440-d910-4295-8d2c-523df7c7630c}</UniqueIdentifier>
@@ -102,6 +96,15 @@
     </Filter>
     <Filter Include="ソース ファイル\player\state\jump">
       <UniqueIdentifier>{d6e51cf7-29e2-4b6a-882e-1e14d7e1a7b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\Aim">
+      <UniqueIdentifier>{c710207c-ace1-4505-9837-d657016fa7f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\manager\collision">
+      <UniqueIdentifier>{983115f9-bc2a-4e14-b476-f734ca0de0eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\base\object\objectManager">
+      <UniqueIdentifier>{4a958fc0-283c-4626-a952-28ee5a0c3e66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,7 +154,7 @@
       <Filter>ソース ファイル\hitCheck</Filter>
     </ClCompile>
     <ClCompile Include="BaseGameObjectManager.cpp">
-      <Filter>ソース ファイル\base\objectManager</Filter>
+      <Filter>ソース ファイル\base\object\objectManager</Filter>
     </ClCompile>
     <ClCompile Include="CharacterManager.cpp">
       <Filter>ソース ファイル\manager\character</Filter>
@@ -185,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="Jump.cpp">
       <Filter>ソース ファイル\player\state\jump</Filter>
+    </ClCompile>
+    <ClCompile Include="Aim.cpp">
+      <Filter>ソース ファイル\player\state\Aim</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -237,7 +243,7 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="BaseGameObjectManager.h">
-      <Filter>ソース ファイル\base\objectManager</Filter>
+      <Filter>ソース ファイル\base\object\objectManager</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager_interface.h">
       <Filter>ソース ファイル\interFace</Filter>
@@ -289,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="Jump.h">
       <Filter>ソース ファイル\player\state\jump</Filter>
+    </ClInclude>
+    <ClInclude Include="Aim.h">
+      <Filter>ソース ファイル\player\state\Aim</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

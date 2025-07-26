@@ -20,4 +20,10 @@ struct PlayerData
 	bool isTurn_right;				//‰E‚É‰ñ“]‚µ‚Ä‚¢‚é‚©
 	bool isLanding;					//’…’n‚µ‚½‚©
 	bool isAim;						//‹|‚ğ\‚¦‚é‚©
+	bool isWalk_forward;
+	bool isWalk_back;
+	bool isWalk_right;
+	bool isWalk_left;
+	bool isDraw_arrow_now;				//‹|‚ğ’e‚¢‚Ä‚¢‚é‚©
+	bool isUse_bow;
 };

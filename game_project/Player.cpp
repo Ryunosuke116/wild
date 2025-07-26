@@ -38,7 +38,7 @@ void Player::Initialize()
     playerData = { false };
     playerData.isIdle = true;
     nowState = std::move(animationChacger->ChangeState(modelHandle, playerData, nowState));
-    nowState->Initialize(modelHandle);
+    nowState->Initialize(modelHandle,playerData);
 
     positionData.position_bottom = position;
     positionData.position_top = MV1GetFramePosition(modelHandle, 6);
@@ -75,8 +75,13 @@ void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
     moveDirection = moveDirection_new;
     playerData = data_new;
 
+    //弓を使っているときはカメラの方向だけ向く
+    if (playerData.isUse_bow)
+    {
+        moveDirection_now = cameraDirection;
+    }
     //0でなければ方向更新
-    if (VSize(moveDirection) != 0)
+    else if (VSize(moveDirection) != 0)
     {
         moveDirection_now = moveDirection;
     }
@@ -110,11 +115,23 @@ bool Player::Draw()
 	DrawSphere3D(position, 2.0f, 30, GetColor(0, 0, 0),
 		GetColor(255, 0, 0), FALSE);
 
+    return false;
+}
+
+/// <summary>
+/// デバッグ描画
+/// </summary>
+void Player::Draw_log()
+{
     printfDx("playerPosition.x %f\nplayerPosition.y %f\nplayerPosition.z %f\n",
         position.x, position.y, position.z);
-	printfDx("frame現在数%d\n", nowFrameNumber);
+    printfDx("frame現在数%d\n", nowFrameNumber);
     printfDx("isGround %d\n", playerData.isGround);
-	return false;
+    printfDx("AnimTime_now %f\n", nowState->GetNowAnimState().PlayTime_anim);
+    printfDx("animBlendRate %f\n", nowState->GetAnimBlendRate());
+    printfDx("JoyPad_x_left %f\n", PadInput::GetJoyPad_x_left());
+    printfDx("JoyPad_y_left %f\n", PadInput::GetJoyPad_y_left());
+    printfDx("GetJoypadDeadZone %f\n", GetJoypadDeadZone(DX_INPUT_KEY_PAD1));
 }
 
 void Player::ChengeState()

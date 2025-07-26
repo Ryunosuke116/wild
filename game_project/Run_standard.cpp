@@ -30,8 +30,13 @@ Run_standard::~Run_standard()
 /// <summary>
 /// 初期化
 /// </summary>
-void Run_standard::Initialize(int& modelHandle)
+void Run_standard::Initialize(int& modelHandle, PlayerData& playerData)
 {
+
+    if (playerData.isRun)
+    {
+
+    }
     // ３Ｄモデルの０番目のアニメーションをアタッチする
     this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum::standard_Run);
 

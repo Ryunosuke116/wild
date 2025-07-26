@@ -86,6 +86,7 @@ bool CharacterManager::Draw()
 	for (auto& chara : characters)
 	{
 		chara->Draw();
+		chara->Draw_log();
 	}
 	collisionManager->Draw();
 

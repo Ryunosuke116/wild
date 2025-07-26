@@ -49,7 +49,7 @@ Jump::~Jump()
 /// 初期化
 /// </summary>
 /// <param name="modelHandle"></param>
-void Jump::Initialize(int& modelHandle)
+void Jump::Initialize(int& modelHandle, PlayerData& playerData)
 {
     // ３Ｄモデルの０番目のアニメーションをアタッチする
     //ランジャンプ

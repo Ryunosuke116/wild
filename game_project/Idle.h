@@ -11,7 +11,7 @@ public:
 		AnimState& nowAnimState, PlayerData& playerData);
 	~Idle();
 
-	void Initialize(int& modelHandle)override;
+	void Initialize(int& modelHandle, PlayerData& playerData)override;
 	
 	std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)override;

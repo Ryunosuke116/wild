@@ -22,6 +22,7 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
     PlayerData& playerData, std::shared_ptr<PlayerStateActionBase>& nowState)
 {
     std::shared_ptr<PlayerStateActionBase> newState = nullptr;
+    bool isUse_bow = SetIsChange_Bow();
 
     //立ち
     if (playerData.isIdle && animNumber_Now != animNum::idle)
@@ -72,13 +73,23 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
     }
 
     //弓を構える
-    if (playerData.isAim && animNumber_Now != animNum::standing_Draw_Arrow)
+    if (playerData.isAim && !isUse_bow)
     {
+        //nowState内のアニメーション情報を保存
+        SetNowAnimState(nowState->GetNowAnimState());
+        SetOldAnimState(nowState->GetOldAnimState());
+
+        //newStateを生成
+        newState = std::make_shared<Aim>(modelHandle, oldAnimState,
+            nowAnimState, playerData);
+
+        newState->SetAnimNumber_old(animNumber_Now);
+        animNumber_Now = animNum::standing_Draw_Arrow;
     }
 
     if (newState)
     {
-        newState->Initialize(modelHandle);
+        newState->Initialize(modelHandle,playerData);
         return newState;
     }
 
@@ -103,4 +114,33 @@ void AnimationChanger::SetNowAnimState(PlayerStateActionBase::AnimState animStat
     nowAnimState.PlayAnimSpeed = animState.PlayAnimSpeed;
     nowAnimState.PlayTime_anim = animState.PlayTime_anim;
     nowAnimState.TotalPlayTime_anim = animState.TotalPlayTime_anim;
+}
+
+/// <summary>
+/// 弓を使用しているか
+/// </summary>
+/// <param name="playerData"></param>
+/// <returns></returns>
+bool AnimationChanger::SetIsChange_Bow()
+{
+    return (animNumber_Now == animNum::draw_Walk_Back ||
+        animNumber_Now == animNum::draw_Walk_Forward || 
+        animNumber_Now == animNum::draw_Walk_Left || 
+        animNumber_Now == animNum::draw_Walk_Right || 
+        animNumber_Now == animNum::standing_Draw_Arrow || 
+        animNumber_Now == animNum::standing_Aim_OverDraw || 
+        animNumber_Now == animNum::standing_Aim_Walk_Back ||
+        animNumber_Now == animNum::standing_Aim_Walk_Forward ||
+        animNumber_Now == animNum::standing_Aim_Walk_Left ||
+        animNumber_Now == animNum::standing_Aim_Walk_Right ||
+        animNumber_Now == animNum::standing_Jump_down ||
+        animNumber_Now == animNum::standing_Jump_up ||
+        animNumber_Now == animNum::standing_Aim_Recoil ||
+        animNumber_Now == animNum::recoil_Walk_Back ||
+        animNumber_Now == animNum::recoil_Walk_Forward ||
+        animNumber_Now == animNum::recoil_Walk_Left ||
+        animNumber_Now == animNum::recoil_Walk_Right ||
+        animNumber_Now == animNum::recoil_Jump_down ||
+        animNumber_Now == animNum::recoil_Jump_Up
+        ) ? true : false;
 }

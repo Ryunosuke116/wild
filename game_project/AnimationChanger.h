@@ -11,6 +11,9 @@ public:
 
 	std::shared_ptr<PlayerStateActionBase> ChangeState(int& modelHandle, PlayerData& playerData,
 		std::shared_ptr<PlayerStateActionBase>& nowState);
+	
+	bool SetIsChange_Bow();
+
 	void SetOldAnimState(PlayerStateActionBase::AnimState animState);
 	void SetNowAnimState(PlayerStateActionBase::AnimState animState);
 
@@ -22,6 +25,6 @@ private:
 
 	PlayerStateActionBase::AnimState oldAnimState;
 	PlayerStateActionBase::AnimState nowAnimState;
-
+	
 };
 

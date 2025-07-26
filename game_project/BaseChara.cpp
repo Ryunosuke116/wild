@@ -58,7 +58,7 @@ void BaseChara::UpdateAngle(const VECTOR& direction, bool& isTurn_right)
     float difference;			// 目標角度と現在の角度との差
 
     // 目標の方向ベクトルから角度値を算出する
-    targetAngle = static_cast<float>(atan2(direction.x, direction.z));
+    targetAngle = static_cast<float>(atan2(-direction.x, -direction.z));
 
     // 目標の角度と現在の角度との差を割り出す
     // 最初は単純に引き算
@@ -101,7 +101,7 @@ void BaseChara::UpdateAngle(const VECTOR& direction, bool& isTurn_right)
 
     // モデルの角度を更新
     angle = targetAngle - difference;
-    MV1SetRotationXYZ(modelHandle, VGet(rotate_x * DX_PI_F / 180.0f, angle + DX_PI_F, 0.0f));
+    MV1SetRotationXYZ(modelHandle, VGet(rotate_x * DX_PI_F / 180.0f, angle, 0.0f));
 }
 
 /// <summary>

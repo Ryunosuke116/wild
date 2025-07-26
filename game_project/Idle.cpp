@@ -32,7 +32,7 @@ Idle::~Idle()
 /// 初期化
 /// </summary>
 /// <param name="modelHandle"></param>
-void Idle::Initialize(int& modelHandle)
+void Idle::Initialize(int& modelHandle, PlayerData& playerData)
 {
     // ３Ｄモデルの０番目のアニメーションをアタッチする
     this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum::idle);
@@ -80,7 +80,7 @@ VECTOR Idle::Command(const VECTOR& cameraDirection, PlayerData& playerData, Play
     //moveDirを取得する
     moveDirection = Move(cameraDirection, playerData);
     JumpMove(playerData,player);
-    Aim(playerData);
+    AimMove(playerData);
 
     if (VSize(moveDirection) != 0.0f)
     {

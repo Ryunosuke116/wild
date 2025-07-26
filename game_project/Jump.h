@@ -11,7 +11,7 @@ public:
 		AnimState& nowAnimState, PlayerData& playerData);
 	~Jump();
 
-	void Initialize(int& modelHandle)override;
+	void Initialize(int& modelHandle, PlayerData& playerData)override;
 
 	bool MotionUpdate(PlayerData& playerData)override;
 

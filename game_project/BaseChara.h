@@ -50,6 +50,7 @@ public:
 	virtual void Initialize()abstract;
 	virtual void Update()abstract;
 	virtual bool Draw()abstract;
+	virtual void Draw_log()abstract;
 
 	virtual void ChangeMotion(const int& motionNum, const float playAnimSpeed);
 	virtual void MotionUpdate();

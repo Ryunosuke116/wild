@@ -66,6 +66,7 @@ public:
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects);
 	
 	bool Draw()override;
+	void Draw_log()override;
 
 	void ChengeState();
 

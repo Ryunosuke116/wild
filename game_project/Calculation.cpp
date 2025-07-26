@@ -197,6 +197,22 @@ VECTOR Calculation::Leap(const VECTOR& changePosition, const VECTOR& latestPosit
 	return VAdd(changePosition, scalePosition);
 }
 
+/// <summary>
+/// ÉâÅ[Év
+/// float
+/// </summary>
+/// <param name="set"></param>
+/// <param name="latest"></param>
+/// <param name="speed"></param>
+/// <returns></returns>
+float Calculation::Leap_float(const float& set, const float& latest, const float& speed)
+{
+	float sub = latest - set;
+	float scale = sub * speed;
+
+	return set + scale;
+}
+
 MATRIX Calculation::Rotate(const VECTOR& wall_normal)
 {
 	VECTOR up = wall_normal;

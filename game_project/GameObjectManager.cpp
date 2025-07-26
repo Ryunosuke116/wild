@@ -115,9 +115,9 @@ bool GameObjectManager::Draw()
 	camera->Draw();
 	skyDome->Draw();
 	field->Draw();
-	for (auto& feildObject : fieldObjects)
+	for (auto& fieldObject : fieldObjects)
 	{
-		feildObject->Draw();
+		fieldObject->Draw();
 	}
 
 	DrawLine3D(VGet(0.0f, 15.0f, 0.0f), VGet(10.0f, 15.0f, 0.0f), GetColor(255, 0, 0));

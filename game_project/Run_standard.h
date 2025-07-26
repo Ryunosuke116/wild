@@ -9,7 +9,7 @@ public:
 		AnimState& nowAnimState, PlayerData& playerData);
 	~Run_standard();
 
-	virtual void Initialize(int& modelHandle)override;
+	virtual void Initialize(int& modelHandle, PlayerData& playerData)override;
 
 	std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)override;

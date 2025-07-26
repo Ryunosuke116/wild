@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Aim.cpp" />
     <ClCompile Include="AnimationChanger.cpp" />
     <ClCompile Include="BaseCalculation_chara.cpp" />
     <ClCompile Include="BaseChara.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="SkyDome.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Aim.h" />
     <ClInclude Include="AnimationChanger.h" />
     <ClInclude Include="BaseCalculation_chara.h" />
     <ClInclude Include="BaseChara.h" />

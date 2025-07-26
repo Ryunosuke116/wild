@@ -23,7 +23,7 @@ public:
 		AnimState& oldAnimState, AnimState& nowAnimState);
 	~PlayerStateActionBase() {};
 
-	virtual void Initialize(int& modelHandle)abstract;
+	virtual void Initialize(int& modelHandle, PlayerData& playerData)abstract;
 
 	virtual bool MotionUpdate(PlayerData& playerData);
 	virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
@@ -32,7 +32,7 @@ public:
 	virtual void Enter(PlayerData& playerData) abstract;		//ó‘Ô‚É“ü‚Á‚½‚Æ‚«
 	virtual void Exit(PlayerData& playerData) abstract;			//ó‘Ô‚ğ”²‚¯‚é‚Æ‚«
 	virtual VECTOR Move(const VECTOR& cameraDirection, PlayerData& playerData);
-	virtual void Aim(PlayerData& playerData);
+	virtual void AimMove(PlayerData& playerData);
 
 	void SetOldAnimState();
 	void ResetOldAnimState();
