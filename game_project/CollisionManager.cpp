@@ -20,10 +20,15 @@ void CollisionManager::Update(std::vector<std::shared_ptr<BaseChara>>& character
 	}
 }
 
-/// @brief 更新
-/// @param player 
-/// @param modelHandle 
-/// @return 
+/// <summary>
+/// 全衝突判定チェック
+/// </summary>
+/// <param name="fieldObjects"></param>
+/// <param name="playerPos"></param>
+/// <param name="moveVec"></param>
+/// <param name="radius"></param>
+/// <param name="positionData"></param>
+/// <returns></returns>
 CollisionResult CollisionManager::Check_all (const std::vector<std::shared_ptr<BaseObject>>& fieldObjects,
 	const VECTOR& playerPos, const VECTOR& moveVec,const float& radius,
 	const PositionData& positionData)

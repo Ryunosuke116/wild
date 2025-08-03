@@ -16,6 +16,7 @@ class Player : public BaseChara
 private:
 
 	static constexpr float modelScale = 0.1f;
+	static constexpr float modelScale_arrow = 0.01f;
 	static constexpr float MaxMoveSpeed = 1.6f;	    // ˆÚ“®‘¬“x
 	static constexpr float rollMoveSpeed_max = 2.5f;	//ƒ[ƒ‹‘¬“x
 	static constexpr float angleSpeed = 0.3f;
@@ -38,6 +39,7 @@ private:
 	VECTOR moveDirection_now;		//Œ»İŒü‚¢‚Ä‚¢‚é•ûŒü
 	VECTOR padInput_now;
 	
+	int arrowHandle;
 
 	float radian_wall;
 	float degree_pad_now;

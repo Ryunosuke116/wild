@@ -8,8 +8,6 @@
 class CharacterManager : public BaseGameObjectManager
 {
 private:
-	std::shared_ptr<BaseChara> player = NULL;
-	std::shared_ptr<Player> actualPlayer = NULL;
 
 	std::vector<std::shared_ptr<BaseChara>> characters;
 	std::shared_ptr<CollisionManager> collisionManager;

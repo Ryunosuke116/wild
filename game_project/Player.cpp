@@ -10,9 +10,11 @@
 Player::Player()
 {
 	modelHandle = MV1LoadModel("material/mv1/player/player.mv1");
-	position = VGet(0.0f, 10.0f, 0.0f);
+    arrowHandle = MV1LoadModel("material/mv1/player/arrow.mv1");
+    position = VGet(0.0f, 10.0f, 0.0f);
 	MV1SetScale(modelHandle, VGet(modelScale, modelScale, modelScale));
 	MV1SetPosition(modelHandle, position);
+    //MV1SetPosition(arrowHandle, VGet(0.0f, 15.0f, 0.0f));
 	nowFrameNumber = 0;
     nowState = std::make_shared<Idle>(modelHandle, oldAnimState, nowAnimState, playerData);
 	animationChacger = std::make_shared<AnimationChanger>();
@@ -42,6 +44,11 @@ void Player::Initialize()
 
     positionData.position_bottom = position;
     positionData.position_top = MV1GetFramePosition(modelHandle, 6);
+    int frameIndex = MV1SearchFrame(modelHandle, "mixamorig:RightHandThumb4");
+
+    MATRIX frameMatrix = MV1GetFrameLocalWorldMatrix(modelHandle, frameIndex);
+
+    MV1SetMatrix(arrowHandle, frameMatrix);
 }
 
 /// <summary>
@@ -78,7 +85,7 @@ void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
     //弓を使っているときはカメラの方向だけ向く
     if (playerData.isUse_bow)
     {
-        moveDirection_now = cameraDirection;
+        //moveDirection_now = cameraDirection;
     }
     //0でなければ方向更新
     else if (VSize(moveDirection) != 0)
@@ -99,6 +106,13 @@ void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
 
     UpdateAngle(moveDirection_now, playerData.isTurn_right);
 
+    int frameIndex = MV1SearchFrame(modelHandle, "mixamorig:RightHand");
+
+    MATRIX frameMatrix = MV1GetFrameLocalWorldMatrix(modelHandle, frameIndex);
+
+
+    MV1SetMatrix(arrowHandle, frameMatrix);
+
 	//矢先 5
 	//持ち手（?）2
 }
@@ -109,6 +123,7 @@ void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
 bool Player::Draw()
 {
 	MV1DrawModel(modelHandle);
+    MV1DrawModel(arrowHandle);
 
 	VECTOR nowFrame = MV1GetFramePosition(modelHandle, nowFrameNumber);
 

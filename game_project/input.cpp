@@ -11,7 +11,6 @@ Input::Input()
 	joyPad(new JoyPad{ 0.0f, 0.0f, 0.0f, 0.0f }),
 	joyPad_old(new JoyPad{ 0.0f, 0.0f, 0.0f, 0.0f })
 {
-	// èàóùÇ»Çµ
 	SetJoypadDeadZone(DX_INPUT_KEY_PAD1, 0.4f);
 }
 

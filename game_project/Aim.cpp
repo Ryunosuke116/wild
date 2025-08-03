@@ -218,6 +218,8 @@ VECTOR Aim::Command(const VECTOR& cameraDirection, PlayerData& playerData, Playe
 
     //moveDirを取得する
     moveDirection = Move(cameraDirection, playerData);
+
+    //斜めに歩くときにアニメーションがバグるから要調整
     playerData.isWalk_forward = PadInput::isUp();
     playerData.isWalk_back = PadInput::isDown();
     playerData.isWalk_left = PadInput::isLeft();
@@ -241,24 +243,6 @@ void Aim::AimMove(PlayerData& playerData)
     }*/
 }
 
-void Aim::SwitchingAnimation(const int& animNum)
-{
-    //古い情報を削除
-    if (this->oldAnimState.AttachIndex != -1)
-    {
-        MV1DetachAnim(modelHandle, this->oldAnimState.AttachIndex);
-        this->oldAnimState.AttachIndex = -1;
-    }
-
-    ////いままで情報をprevに保存
-    this->oldAnimState.AttachIndex = nowAnimState.AttachIndex;
-    this->oldAnimState.PlayTime_anim = nowAnimState.PlayTime_anim;
-    animBlendRate = 0.0f;
-
-    //アニメーションをアタッチ
-    this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum);
-
-}
 
 /// <summary>
 /// 状態によってアニメーションを変更する

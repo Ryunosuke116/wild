@@ -26,7 +26,6 @@ public:
 	void Change_draw(PlayerData& playerData);
 	void Change_recoil(PlayerData& playerData);
 	void Change_aim(PlayerData& playerData);
-	void SwitchingAnimation(const int& animNum);
 
 private:
 	static constexpr float playAnimSpeed = 0.5f;

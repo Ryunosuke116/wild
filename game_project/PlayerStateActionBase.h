@@ -33,6 +33,7 @@ virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 	virtual void Exit(PlayerData& playerData) abstract;			//ó‘Ô‚ğ”²‚¯‚é‚Æ‚«
 	virtual VECTOR Move(const VECTOR& cameraDirection, PlayerData& playerData);
 	virtual void AimMove(PlayerData& playerData);
+	virtual void SwitchingAnimation(const int& animNum);
 
 	void SetOldAnimState();
 	void ResetOldAnimState();

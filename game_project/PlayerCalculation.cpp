@@ -30,7 +30,7 @@ VECTOR PlayerCalculation::Update(const VECTOR& moveDirection,
     moveVec = Gravity(playerData.isGround, moveVec);
 
     //ƒWƒƒƒ“ƒvŒvŽZ
-    moveVec = Jump(moveVec, animNumber_Now, playerData);
+    moveVec = Jump(moveVec, playerData);
 
     //moveVec‚ð•Û‘¶
     moveVec_old = moveVec;
@@ -98,7 +98,7 @@ VECTOR PlayerCalculation::Move(const VECTOR& moveDirection, const PlayerData& pl
     return VScale(moveDirection, velocity);
 }
 
-VECTOR PlayerCalculation::Jump(const VECTOR& moveVec, const int& animNumber_Now,const PlayerData& playerData)
+VECTOR PlayerCalculation::Jump(const VECTOR& moveVec ,const PlayerData& playerData)
 {
     VECTOR move = moveVec;
 

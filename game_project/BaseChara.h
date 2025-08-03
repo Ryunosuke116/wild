@@ -63,7 +63,7 @@ public:
 	/////////////////////////////////////////////
 	VECTOR GetPosition() const { return position; }
 	VECTOR GetFramePosition()const { return framePosition; }
-	VECTOR GetMoveVec() { return moveVec; }
+	VECTOR GetMoveVec()const { return moveVec; }
 	PositionData GetPositionData() const { return positionData; }
 	virtual float GetRadius()const abstract;
 

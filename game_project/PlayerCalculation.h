@@ -15,7 +15,7 @@ public:
 
 	VECTOR Move(const VECTOR& moveDirection,const PlayerData& playerData);
 
-	VECTOR Jump(const VECTOR& moveVec, const int& animNumber_Now, const PlayerData& playerData);
+	VECTOR Jump(const VECTOR& moveVec, const PlayerData& playerData);
 
 	float GetjumpPower_now() const { return jumpPower_now; }
 	float GetmoveSpeed_now() const { return moveSpeed_now; }

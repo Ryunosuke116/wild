@@ -105,7 +105,33 @@ bool PlayerStateActionBase::MotionUpdate(PlayerData& playerData)
     return false;
 }
 
+/// <summary>
+/// アニメーションを変更する
+/// </summary>
+/// <param name="animNum"></param>
+void PlayerStateActionBase::SwitchingAnimation(const int& animNum)
+{
+    //古い情報を削除
+    if (this->oldAnimState.AttachIndex != -1)
+    {
+        MV1DetachAnim(modelHandle, this->oldAnimState.AttachIndex);
+        this->oldAnimState.AttachIndex = -1;
+        animBlendRate = 0.0f;
+    }
 
+    ////いままで情報をprevに保存
+    this->oldAnimState.AttachIndex = nowAnimState.AttachIndex;
+    this->oldAnimState.PlayTime_anim = nowAnimState.PlayTime_anim;
+
+    //アニメーションをアタッチ
+    this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum);
+
+}
+
+/// <summary>
+/// 描画
+/// </summary>
+/// <returns></returns>
 bool PlayerStateActionBase::Draw()
 {
     printfDx("nowAttachIndex %d\n", nowAnimState.AttachIndex);
