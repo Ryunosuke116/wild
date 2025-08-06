@@ -19,7 +19,8 @@ AnimationChanger::~AnimationChanger()
 /// アニメーション変更
 /// </summary>
 std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelHandle,
-    PlayerData& playerData, std::shared_ptr<PlayerStateActionBase>& nowState)
+    int& bottomHandle, PlayerData& playerData,
+    std::shared_ptr<PlayerStateActionBase>& nowState)
 {
     std::shared_ptr<PlayerStateActionBase> newState = nullptr;
     bool isUse_bow = SetIsChange_Bow();
@@ -32,7 +33,7 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
         SetOldAnimState(nowState->GetOldAnimState());
 
         //newStateを生成
-        newState = std::make_shared<Idle>(modelHandle, oldAnimState,
+        newState = std::make_shared<Idle>(modelHandle, bottomHandle, oldAnimState,
             nowAnimState, playerData);
 
         newState->SetAnimNumber_old(animNumber_Now);
@@ -47,7 +48,7 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
         SetOldAnimState(nowState->GetOldAnimState());
 
         //newStateを生成
-        newState = std::make_shared<Run_standard>(modelHandle, oldAnimState,
+        newState = std::make_shared<Run_standard>(modelHandle, bottomHandle, oldAnimState,
             nowAnimState, playerData);
 
         newState->SetAnimNumber_old(animNumber_Now);
@@ -65,7 +66,7 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
         SetOldAnimState(nowState->GetOldAnimState());
 
         //newStateを生成
-        newState = std::make_shared<Jump>(modelHandle, oldAnimState,
+        newState = std::make_shared<Jump>(modelHandle, bottomHandle, oldAnimState,
             nowAnimState, playerData);
 
         newState->SetAnimNumber_old(animNumber_Now);
@@ -80,7 +81,7 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
         SetOldAnimState(nowState->GetOldAnimState());
 
         //newStateを生成
-        newState = std::make_shared<Aim>(modelHandle, oldAnimState,
+        newState = std::make_shared<Aim>(modelHandle, bottomHandle, oldAnimState,
             nowAnimState, playerData);
 
         newState->SetAnimNumber_old(animNumber_Now);
@@ -89,7 +90,8 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
 
     if (newState)
     {
-        newState->Initialize(modelHandle,playerData);
+        newState->Initialize(modelHandle,bottomHandle, playerData);
+        newState->Enter(playerData);
         return newState;
     }
 

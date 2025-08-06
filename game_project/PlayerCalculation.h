@@ -26,7 +26,7 @@ public:
 	void ChangeIsJumpPower_add_ture() { isJumpPower_add = true; }
 
 private:
-	static constexpr float MaxMoveSpeed = 1.6f;	    // 移動速度
+	static constexpr float MaxMoveSpeed = 0.8f;	    // 移動速度
 	static constexpr float rollMoveSpeed_max = 2.5f;	//ロール速度
 	static constexpr float addJumpPower = 1.2f;		//ジャンプパワー
 	static constexpr float gravity = -0.06f;

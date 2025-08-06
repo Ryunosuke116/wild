@@ -14,9 +14,9 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="modelHandle"></param>
-Jump::Jump(int& modelHandle,
+Jump::Jump(int& modelHandle, int& bottomHandle,
     AnimState& oldAnimState, AnimState& nowAnimState, PlayerData& playerData) :
-    PlayerStateActionBase(modelHandle, oldAnimState, nowAnimState)
+    PlayerStateActionBase(modelHandle, bottomHandle, oldAnimState, nowAnimState)
 {
 
     //弓を弾いていたらtrue
@@ -49,7 +49,7 @@ Jump::~Jump()
 /// 初期化
 /// </summary>
 /// <param name="modelHandle"></param>
-void Jump::Initialize(int& modelHandle, PlayerData& playerData)
+void Jump::Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)
 {
     // ３Ｄモデルの０番目のアニメーションをアタッチする
     //ランジャンプ
@@ -101,10 +101,12 @@ std::pair<VECTOR, PlayerData> Jump::Update(const VECTOR& cameraDirection,
     }
     else if(playerData.isGround && !isRun)
     {
+        isChangeState = true;
         playerData.isIdle = true;
     }
     else if (playerData.isGround && isRun)
     {
+        isChangeState = true;
         playerData.isRun = true;
     }
 

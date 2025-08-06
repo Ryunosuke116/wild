@@ -4,4 +4,5 @@
 #include "Field.h"
 #include "Player.h"
 #include "CharacterManager.h"
+#include "ArrowManager.h"
 #include "SkyDome.h"

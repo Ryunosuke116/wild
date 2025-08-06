@@ -137,6 +137,9 @@
   <ItemGroup>
     <ClCompile Include="Aim.cpp" />
     <ClCompile Include="AnimationChanger.cpp" />
+    <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="ArrowManager.cpp" />
+    <ClCompile Include="ArrowObserver.cpp" />
     <ClCompile Include="BaseCalculation_chara.cpp" />
     <ClCompile Include="BaseChara.cpp" />
     <ClCompile Include="BaseGameObjectManager.cpp" />
@@ -146,6 +149,7 @@
     <ClCompile Include="Calculation.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="DebugDrawer.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
@@ -166,6 +170,9 @@
   <ItemGroup>
     <ClInclude Include="Aim.h" />
     <ClInclude Include="AnimationChanger.h" />
+    <ClInclude Include="Arrow.h" />
+    <ClInclude Include="ArrowManager.h" />
+    <ClInclude Include="ArrowObserver.h" />
     <ClInclude Include="BaseCalculation_chara.h" />
     <ClInclude Include="BaseChara.h" />
     <ClInclude Include="BaseGameObjectManager.h" />
@@ -177,6 +184,7 @@
     <ClInclude Include="CollisionData.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="DebugDrawer.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObjectManager.h" />

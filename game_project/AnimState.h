@@ -27,3 +27,13 @@ enum animNum : int
 	standing_Aim_Walk_Right,		//\‚¦‚È‚ª‚ç•à‚­(‰E)
 	standing_Draw_Arrow				//‹|‚ğˆø‚­
 };
+
+enum animNum_bottom : int
+{
+	backward,
+	backward_left,
+	backward_right,
+	forward,
+	forward_left,
+	forward_right
+};

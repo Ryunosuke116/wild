@@ -9,7 +9,8 @@ public:
 	AnimationChanger();
 	~AnimationChanger();
 
-	std::shared_ptr<PlayerStateActionBase> ChangeState(int& modelHandle, PlayerData& playerData,
+	std::shared_ptr<PlayerStateActionBase> ChangeState(int& modelHandle, int& bottomHandle,
+		PlayerData& playerData,
 		std::shared_ptr<PlayerStateActionBase>& nowState);
 	
 	bool SetIsChange_Bow();

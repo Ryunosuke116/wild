@@ -12,9 +12,9 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="modelHandle"></param>
-Aim::Aim(int& modelHandle,
+Aim::Aim(int& modelHandle, int& bottomHandle,
     AnimState& oldAnimState, AnimState& nowAnimState, PlayerData& playerData) :
-    PlayerStateActionBase(modelHandle, oldAnimState, nowAnimState)
+    PlayerStateActionBase(modelHandle, bottomHandle, oldAnimState, nowAnimState)
 {
 
     //弓を弾いていたらtrue
@@ -49,7 +49,7 @@ Aim::~Aim()
 /// 初期化
 /// </summary>
 /// <param name="modelHandle"></param>
-void Aim::Initialize(int& modelHandle, PlayerData& playerData)
+void Aim::Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)
 {
     // ３Ｄモデルの０番目のアニメーションをアタッチする
     if (!playerData.isMove)
@@ -57,7 +57,7 @@ void Aim::Initialize(int& modelHandle, PlayerData& playerData)
         this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum::standing_Draw_Arrow);
         animationNum_now = standing_Draw_Arrow;
     }
-    if (playerData.isWalk_forward)
+    else if (playerData.isWalk_forward)
     {
         this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum::draw_Walk_Forward);
         animationNum_now = draw_Walk_Forward;
@@ -103,17 +103,6 @@ std::pair<VECTOR, PlayerData> Aim::Update(const VECTOR& cameraDirection,
 
     ChangeArrowState(playerData);
 
-    if (!playerData.isAim)
-    {
-        if (VSize(moveDirection) != 0)
-        {
-            playerData.isRun = true;
-        }
-        else
-        {
-            playerData.isIdle = true;
-        }
-    }
 
     return std::make_pair(moveDirection, playerData);
 }
@@ -151,6 +140,7 @@ bool Aim::MotionUpdate(PlayerData& playerData)
             nowAnimState.PlayTime_anim >= totalTime_anim)
         {
             arrowStateNum_now = ArrowState::aim;
+           
         }
 
         //エイム中
@@ -169,6 +159,17 @@ bool Aim::MotionUpdate(PlayerData& playerData)
             nowAnimState.PlayTime_anim = totalTime_anim;
             playerData.isAim = false;
             playerData.isUse_bow = false;
+
+            isChangeState = true;
+            if (playerData.isMove)
+            {
+                playerData.isRun = true;
+            }
+            else if (!playerData.isMove)
+            {
+                playerData.isIdle = true;
+            }
+
         }
 
         // 再生時間をセットする
@@ -184,6 +185,18 @@ bool Aim::MotionUpdate(PlayerData& playerData)
     {
         // アニメーションの総時間を取得
         totalTime_anim = MV1GetAttachAnimTotalTime(modelHandle, oldAnimState.AttachIndex);
+
+        if (arrowStateNum_now == ArrowState::aim)
+        {
+          //  // 再生時間を進める
+          //  oldAnimState.PlayTime_anim += oldAnimState.PlayAnimSpeed;
+
+          //// 再生時間が総時間に到達していたら再生時間をループさせる
+          //  if (oldAnimState.PlayTime_anim > totalTime_anim)
+          //  {
+          //      oldAnimState.PlayTime_anim = static_cast<float>(fmod(oldAnimState.PlayTime_anim, totalTime_anim));
+          //  }
+        }
 
         // 変更した再生時間をモデルに反映させる
         MV1SetAttachAnimTime(modelHandle, oldAnimState.AttachIndex, oldAnimState.PlayTime_anim);
@@ -212,7 +225,8 @@ void Aim::Exit(PlayerData& playerData)
 /// <param name="playerData"></param>
 /// <param name="player"></param>
 /// <returns></returns>
-VECTOR Aim::Command(const VECTOR& cameraDirection, PlayerData& playerData, Player& player)
+VECTOR Aim::Command(const VECTOR& cameraDirection,
+    PlayerData& playerData, Player& player)
 {
     VECTOR moveDirection = VGet(0.0f, 0.0f, 0.0f);
 
@@ -220,27 +234,102 @@ VECTOR Aim::Command(const VECTOR& cameraDirection, PlayerData& playerData, Playe
     moveDirection = Move(cameraDirection, playerData);
 
     //斜めに歩くときにアニメーションがバグるから要調整
-    playerData.isWalk_forward = PadInput::isUp();
-    playerData.isWalk_back = PadInput::isDown();
-    playerData.isWalk_left = PadInput::isLeft();
-    playerData.isWalk_right = PadInput::isRight();
+    float radian_pad = 0.0f;
+    float degree_pad_now = 0.0f;
+    float angle;
+    bool isUp = false;
+    bool isDown = false;
+    bool isRight = false;
+    bool isLeft = false;
 
-    AimMove(playerData);
+     //atan2f(-PadInput::GetJoyPad_x_left(), -PadInput::GetJoyPad_y_left());
+    
+     if (PadInput::GetJoyPad_x_left() ||
+         PadInput::GetJoyPad_y_left())
+     {
+        radian_pad = atan2f(-PadInput::GetJoyPad_x_left(), -PadInput::GetJoyPad_y_left());
+        degree_pad_now = Calculation::radToDeg(radian_pad);
+     }
+     else
+     {
+         player.SetAngle_aim(0.0f);
+
+     }
+
+     //前
+     if ((degree_pad_now <= 45.0f &&
+         degree_pad_now >= -45.0f) &&
+         playerData.isMove)
+     {
+         player.SetAngle_aim(degree_pad_now);
+         angle = degree_pad_now;
+        isUp = true;
+     }
+     //左
+     if (degree_pad_now > 45.0f &&
+         degree_pad_now < 135.0f)
+     {
+         player.SetAngle_aim(degree_pad_now - 90.0f);
+         angle = degree_pad_now - 90.0f;
+        isLeft = true;
+     }
+     //右
+     if (degree_pad_now < -45.0f &&
+         degree_pad_now > -135.0f)
+     {
+         player.SetAngle_aim(degree_pad_now + 90.0f);
+         angle = degree_pad_now + 90.0f;
+        isRight = true;
+     }
+     //後ろ
+     if ((degree_pad_now >= 135.0f &&
+         degree_pad_now <= -135.0f) ||
+         degree_pad_now == -180.0f)
+     {
+         player.SetAngle_aim(degree_pad_now - 180.0f);
+         angle = degree_pad_now - 180.0f;
+         isDown = true;
+     }
+
+     playerData.isWalk_forward = isUp;
+     playerData.isWalk_left = isLeft;
+     playerData.isWalk_right = isRight;
+     playerData.isWalk_back = isDown;
+
+    AimMove(playerData,player);
 
     return moveDirection;
 }
 
-void Aim::AimMove(PlayerData& playerData)
+void Aim::AimMove(PlayerData& playerData, Player& player)
 {
-  /*  if (PadInput::isAim())
+    if (PadInput::isAim())
     {
         playerData.isAim = true;
         playerData.isUse_bow = true;
     }
     else
     {
-        arrowStateNum_now = ArrowState::recoil;
-    }*/
+        if (arrowStateNum_now == ArrowState::draw)
+        {
+            isChangeState = true;
+            if (playerData.isMove)
+            {
+                playerData.isRun = true;
+            }
+            else if (!playerData.isMove)
+            {
+                playerData.isIdle = true;
+            }
+            playerData.isUse_bow = false;
+            player.SetAngle_aim(0.0f);
+        }
+        if (arrowStateNum_now == ArrowState::aim)
+        {
+            arrowStateNum_now = ArrowState::recoil;
+            player.NotifyRecoilArrow();
+        }
+    }
 }
 
 
@@ -249,14 +338,17 @@ void Aim::AimMove(PlayerData& playerData)
 /// </summary>
 void Aim::ChangeArrowState(PlayerData& playerData)
 {
-    //弓を弾いている場合
-    Change_draw(playerData);
+    if (animBlendRate >= 1.0f)
+    {
+        //弓を弾いている場合
+        Change_draw(playerData);
     
-    //エイム中
-    Change_aim(playerData);
+        //エイム中
+        Change_aim(playerData);
  
-    //放つ
-    Change_recoil(playerData);
+        //放つ
+        Change_recoil(playerData);
+    }
 }
 
 /// <summary>
@@ -270,31 +362,46 @@ void Aim::Change_draw(PlayerData& playerData)
         if (playerData.isWalk_forward &&
             animationNum_now != animNum::draw_Walk_Forward)
         {
-            SwitchingAnimation(animNum::draw_Walk_Forward);
+            SwitchingAnimation(animNum::draw_Walk_Forward,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::draw_Walk_Forward;
         }
         else if (playerData.isWalk_back &&
             animationNum_now != animNum::draw_Walk_Back)
         {
-            SwitchingAnimation(animNum::draw_Walk_Back);
+            SwitchingAnimation(animNum::draw_Walk_Back,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::draw_Walk_Back;
         }
         else if (playerData.isWalk_left &&
             animationNum_now != animNum::draw_Walk_Left)
         {
-            SwitchingAnimation(animNum::draw_Walk_Left);
+            SwitchingAnimation(animNum::draw_Walk_Left,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::draw_Walk_Left;
         }
         else if (playerData.isWalk_right &&
             animationNum_now != animNum::draw_Walk_Right)
         {
-            SwitchingAnimation(animNum::draw_Walk_Right);
+            SwitchingAnimation(animNum::draw_Walk_Right,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::draw_Walk_Right;
         }
         else if (!playerData.isMove &&
             animationNum_now != animNum::standing_Draw_Arrow)
         {
-            SwitchingAnimation(animNum::standing_Draw_Arrow);
+            SwitchingAnimation(animNum::standing_Draw_Arrow,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::standing_Draw_Arrow;
         }
     }
@@ -310,32 +417,47 @@ void Aim::Change_aim(PlayerData& playerData)
         if (playerData.isWalk_forward &&
             animationNum_now != animNum::standing_Aim_Walk_Forward)
         {
-            SwitchingAnimation(animNum::standing_Aim_Walk_Forward);
+            SwitchingAnimation(animNum::standing_Aim_Walk_Forward,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::standing_Aim_Walk_Forward;
         }
         else if (playerData.isWalk_back &&
             animationNum_now != animNum::standing_Aim_Walk_Back)
         {
-            SwitchingAnimation(animNum::standing_Aim_Walk_Back);
+            SwitchingAnimation(animNum::standing_Aim_Walk_Back,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::standing_Aim_Walk_Back;
         }
         else if (playerData.isWalk_left &&
             animationNum_now != animNum::standing_Aim_Walk_Left)
         {
-            SwitchingAnimation(animNum::standing_Aim_Walk_Left);
+            SwitchingAnimation(animNum::standing_Aim_Walk_Left,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::standing_Aim_Walk_Left;
         }
         else if (playerData.isWalk_right &&
             animationNum_now != animNum::standing_Aim_Walk_Right)
         {
-            SwitchingAnimation(animNum::standing_Aim_Walk_Right);
+            SwitchingAnimation(animNum::standing_Aim_Walk_Right,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::standing_Aim_Walk_Right;
         }
         //動いてない場合
         else if (!playerData.isMove &&
             animationNum_now != animNum::standing_Aim_OverDraw)
         {
-            SwitchingAnimation(animNum::standing_Aim_OverDraw);
+            SwitchingAnimation(animNum::standing_Aim_OverDraw,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
             animationNum_now = animNum::standing_Aim_OverDraw;
         }
     }
@@ -351,28 +473,43 @@ void Aim::Change_recoil(PlayerData& playerData)
         if (playerData.isWalk_forward &&
             animationNum_now != animNum::recoil_Walk_Forward)
         {
-            SwitchingAnimation(animNum::recoil_Walk_Forward);
+            SwitchingAnimation(animNum::recoil_Walk_Forward,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
         }
         else if (playerData.isWalk_back &&
             animationNum_now != recoil_Walk_Back)
         {
-            SwitchingAnimation(animNum::recoil_Walk_Back);
+            SwitchingAnimation(animNum::recoil_Walk_Back,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
         }
         else if (playerData.isWalk_left &&
             animationNum_now != animNum::recoil_Walk_Left)
         {
-            SwitchingAnimation(animNum::recoil_Walk_Left);
+            SwitchingAnimation(animNum::recoil_Walk_Left,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
         }
         else if (playerData.isWalk_right &&
             animationNum_now != animNum::recoil_Walk_Right)
         {
-            SwitchingAnimation(animNum::recoil_Walk_Right);
+            SwitchingAnimation(animNum::recoil_Walk_Right,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
         }
         //動いてない場合
         else if (!playerData.isMove &&
             animationNum_now != animNum::standing_Aim_Recoil)
         {
-            SwitchingAnimation(animNum::standing_Aim_Recoil);
+            SwitchingAnimation(animNum::standing_Aim_Recoil,
+                modelHandle,
+                oldAnimState,
+                nowAnimState);
         }
     }
 }

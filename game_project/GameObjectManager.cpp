@@ -27,15 +27,18 @@ void GameObjectManager::Create()
 
 	skyDome = std::make_shared<SkyDome>("material/skyDome/sunSet.mv1");
 	field = std::make_shared<Field>("material/mv1/field.mv1");
-	characterManager = std::make_shared<CharacterManager>();
-	camera = std::make_shared<Camera>();
+	characterManager	= std::make_shared<CharacterManager>();
+	arrowManager		= std::make_shared<ArrowManager>();
+	camera				= std::make_shared<Camera>();
 
-	skyDome_actual = std::dynamic_pointer_cast<SkyDome>(skyDome);
+	skyDome_actual			= std::dynamic_pointer_cast<SkyDome>(skyDome);
 	characterManager_actual = std::dynamic_pointer_cast<CharacterManager>(characterManager);
-
+	arrowManager_actual		= std::dynamic_pointer_cast<ArrowManager>(arrowManager);
+	
 	fieldObjects.push_back(std::make_shared<Field>("material/mv1/field.mv1"));
 
 	characterManager->Create();
+	characterManager_actual->AddObserver_player(arrowManager_actual);
 
 }
 
@@ -53,7 +56,7 @@ void GameObjectManager::Initialize()
 	skyDome->Initialize();
 	field->Initialize();
 	characterManager->Initialize();
-	camera->Initialize();
+	camera->Initialize(characterManager_actual->GetPlayer()->GetPosition());
 	PadInput::Initialize();
 
 	isCamera = false;
@@ -89,10 +92,13 @@ void GameObjectManager::Update(const float& gameTimer)
 
 	if (!isCamera)
 	{
-		camera->Update(characterManager_actual->GetPlayer()->GetPosition(), fieldObjects);
+		camera->Update(characterManager_actual->GetPlayer()->GetPosition(),
+			characterManager_actual->GetPlayer()->GetData(),
+			fieldObjects);
 
 		characterManager_actual->Update(fieldObjects, camera->GetCameraDirection(), gameTimer);
 		skyDome_actual->Update(characterManager_actual->GetPlayer()->GetPosition());
+		arrowManager_actual->Update(characterManager_actual->GetPlayer());
 		field->Update();
 		for (auto& feildObject : fieldObjects)
 		{
@@ -112,6 +118,7 @@ void GameObjectManager::Update(const float& gameTimer)
 bool GameObjectManager::Draw()
 {
 	characterManager->Draw();
+	arrowManager->Draw();
 	camera->Draw();
 	skyDome->Draw();
 	field->Draw();

@@ -93,14 +93,14 @@ bool PadInput::isJump()
 }
 
 /// <summary>
-/// ƒ[ƒ‹“ü—Í
+/// ƒGƒCƒ€“ü—Í
 /// </summary>
 /// <param name="input"></param>
 /// <returns></returns>
 bool PadInput::isAim()
 {
     if (CheckHitKey(KEY_INPUT_F) ||
-        input->GetNowFrameNewInput() & PAD_INPUT_R)
+        input->GetNowFrameInput() & PAD_INPUT_R)
     {
         return true;
     }

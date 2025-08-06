@@ -22,8 +22,10 @@ public:
 	void Create()		override;
 	void Initialize()	override;
 	void Update()		override;
-	bool Draw()			override;
+	void Draw()			override;
 	void Add()			override;
+
+	void AddObserver_player(std::shared_ptr<ArrowObserver> observer);
 
 
 	VECTOR PositionCheck(const VECTOR& hangingPos, const VECTOR& playerPos);

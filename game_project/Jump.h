@@ -7,11 +7,11 @@ class Player;
 class Jump : public PlayerStateActionBase
 {
 public:
-	Jump(int& modelHandle, AnimState& oldAnimState,
+	Jump(int& modelHandle, int& bottomHandle, AnimState& oldAnimState,
 		AnimState& nowAnimState, PlayerData& playerData);
 	~Jump();
 
-	void Initialize(int& modelHandle, PlayerData& playerData)override;
+	void Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)override;
 	std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)override;
 

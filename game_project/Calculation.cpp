@@ -151,11 +151,14 @@ Calculation::NearestResult Calculation::SphereMeshOutsideTriangle_line(const MV1
 	return result;
 }
 
-/// @brief 
-/// @param point 
-/// @param a 
-/// @param b 
-/// @return 
+
+/// <summary>
+/// 射影方向
+/// </summary>
+/// <param name="point"></param>
+/// <param name="a"></param>
+/// <param name="b"></param>
+/// <returns></returns>
 VECTOR Calculation::ProjectionDirection(const VECTOR& point, const VECTOR& a, const VECTOR& b)
 {
 	VECTOR AB = VSub(b, a);
@@ -211,6 +214,40 @@ float Calculation::Leap_float(const float& set, const float& latest, const float
 	float scale = sub * speed;
 
 	return set + scale;
+}
+
+/// <summary>
+/// ロドリゲスの回転
+/// </summary>
+/// <param name="center"></param>
+/// <param name="rotatePos"></param>
+/// <param name="dir"></param>
+/// <param name="radian"></param>
+/// <returns></returns>
+VECTOR Calculation::Rodrigues(const VECTOR& center,
+	const VECTOR& rotatePos,const VECTOR& dir,const float& radian)
+{
+	VECTOR sub = VSub(rotatePos, center);
+	float cos = cosf(radian);
+	float sin = sinf(radian);
+
+	VECTOR term_1 = VScale(sub, cos);
+	VECTOR term_2 = VScale(VCross(dir, sub), sin);
+	VECTOR term_3 = VScale(dir, ((1 - cos) * VDot(sub, dir)));
+
+	VECTOR rotated = VAdd(term_1, VAdd(term_2, term_3));
+
+	return VAdd(center,rotated);
+}
+
+/// <summary>
+/// イースアウト
+/// </summary>
+/// <param name="t"></param>
+/// <returns></returns>
+float Calculation::EaseOutQuad(float t)
+{
+	return 1 - (1 - t) * (1 - t);
 }
 
 MATRIX Calculation::Rotate(const VECTOR& wall_normal)

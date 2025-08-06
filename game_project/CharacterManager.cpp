@@ -72,6 +72,14 @@ void CharacterManager::Update(const std::vector<std::shared_ptr<BaseObject>>& fi
 	for (auto& chara : characters)
 	{
 		chara->PositionUpdate();
+		if (auto player = std::dynamic_pointer_cast<Player>(chara))
+		{
+			int frameIndex = MV1SearchFrame(player->GetModelHandle(), "mixamorig:RightHand");
+
+			MATRIX frameMatrix = MV1GetFrameLocalWorldMatrix(player->GetModelHandle(), frameIndex);
+
+			MV1SetMatrix(player->GetArrowHandle(), frameMatrix);
+		}
 	}
 
 }
@@ -79,7 +87,7 @@ void CharacterManager::Update(const std::vector<std::shared_ptr<BaseObject>>& fi
 /// <summary>
 /// •`‰æ
 /// </summary>
-bool CharacterManager::Draw()
+void CharacterManager::Draw()
 {
 	for (auto& chara : characters)
 	{
@@ -88,7 +96,6 @@ bool CharacterManager::Draw()
 	}
 	collisionManager->Draw();
 
-	return true;
 }
 
 VECTOR CharacterManager::PositionCheck(const VECTOR& hangingPos, const VECTOR& playerPos)
@@ -100,6 +107,17 @@ VECTOR CharacterManager::PositionCheck(const VECTOR& hangingPos, const VECTOR& p
 	Calculation::Leap(newPlayerPos, hanging, 0.1f);
 
 	return newPlayerPos;
+}
+
+void CharacterManager::AddObserver_player(std::shared_ptr<ArrowObserver> observer)
+{
+	for (auto& chara : characters)
+	{
+		if (auto player = std::dynamic_pointer_cast<Player>(chara))
+		{
+			player->AddObserver(observer);
+		}
+	}
 }
 
 void CharacterManager::Update() {}

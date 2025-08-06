@@ -12,9 +12,9 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="modelHandle"></param>
-Run_standard::Run_standard(int& modelHandle,
+Run_standard::Run_standard(int& modelHandle, int& bottomHandle,
     AnimState& oldAnimState, AnimState& nowAnimState, PlayerData& playerData) :
-    PlayerStateActionBase(modelHandle, oldAnimState, nowAnimState)
+    PlayerStateActionBase(modelHandle, bottomHandle, oldAnimState, nowAnimState)
 {
 
 }
@@ -30,7 +30,7 @@ Run_standard::~Run_standard()
 /// <summary>
 /// 初期化
 /// </summary>
-void Run_standard::Initialize(int& modelHandle, PlayerData& playerData)
+void Run_standard::Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)
 {
 
     if (playerData.isRun)
@@ -76,6 +76,7 @@ VECTOR Run_standard::Command(const VECTOR& cameraDirection, PlayerData& playerDa
     
     if (VSize(returnPos) == 0.0f)
     {
+        isChangeState = true;
         playerData.isIdle = true;
     }
 
@@ -92,6 +93,7 @@ void Run_standard::JumpMove(PlayerData& playerData, Player& player)
         //ジャンプ
         if (!player.playerCalculation->GetIsJumpPower_add() && !isPush)
         {
+            isChangeState = true;
             playerData.isJump = true;
             isPush = true;
             player.playerCalculation->ChangeIsJumpPower_add_ture();

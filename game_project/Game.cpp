@@ -4,6 +4,7 @@
 #include "BaseScene.h"
 #include "GameTimer.h"
 #include "Game.h"
+#include "DebugDrawer.h"
 
 /// <summary>
 /// インスタンス化
@@ -47,4 +48,5 @@ void Game::Draw()
 {
 	clsDx();
 	gameObjectManager->Draw();
+	DebugDrawer::Instance().Draw();
 }

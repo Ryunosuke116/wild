@@ -6,6 +6,7 @@
 #include "PlayerStateActionBase.h"
 #include "AnimationChanger.h"
 #include "PlayerCalculation.h"
+#include "ArrowObserver.h"
 
 class PlayerStateActionBase;
 class Idle;
@@ -40,16 +41,22 @@ private:
 	VECTOR padInput_now;
 	
 	int arrowHandle;
+	int upHandle;
+	int attachIndex;
+	int bottomHandle;
 
 	float radian_wall;
 	float degree_pad_now;
 	float degree_difference;
 	float degree_pad_wall_difference;
+	float angle_aim;
 
 	bool isPush;					//ボタンを押したか
 	bool isChange_falling;				//アニメーションを変更するか
 	bool isCalc;
 	bool isCalc_moveVec;
+
+	std::string frameName;
 
 	//他クラス
 	std::shared_ptr<PlayerStateActionBase> nowState;
@@ -57,8 +64,14 @@ private:
 	PlayerStateActionBase::AnimState nowAnimState;
 	PlayerData playerData;
 	std::shared_ptr<AnimationChanger> animationChacger = NULL;
+	std::vector<std::weak_ptr<ArrowObserver>> observers;
 
 public:
+
+	void AddObserver(std::shared_ptr<ArrowObserver> observer) { observers.push_back(observer); }
+	void RemoveObserver(std::shared_ptr<ArrowObserver> observer);
+	void NotifyRecoilArrow();
+
 	Player();
 	~Player();
 
@@ -69,6 +82,7 @@ public:
 	
 	bool Draw()override;
 	void Draw_log()override;
+	void MotionUpdate()override;
 
 	void ChengeState();
 
@@ -78,11 +92,12 @@ public:
 	void Receive_CollisionResult();
 
 	std::shared_ptr<PlayerCalculation> playerCalculation = NULL;
-
+	std::vector<MATRIX> matrixs;
 	//////////////////////////////////
 	//　ゲッター
 	///////////////////////////////////
 
+	int GetArrowHandle() { return arrowHandle; }
 	VECTOR GetCenterPos() { return centerPosition; }
 	VECTOR GetTopPos() { return topPosition; }
 	VECTOR GetBottomPos() { return bottomPosition; }
@@ -93,11 +108,14 @@ public:
 	VECTOR GetHandPos_left() { return handPos_left; }
 	PlayerData GetData() { return playerData; }
 	float GetRadius() const override { return radius; }
+	bool GetIsRecoil_arrow()const { return playerData.isRecoil_arrow; }
+	std::string GetFrameName()const { return frameName; }
 
 	//////////////////////////////////
 	/// セッター
 	///////////////////////////////// 
-	void SetPos(VECTOR newPos) { position = newPos; }
-
+	void SetPos(const VECTOR set) { position = set; }
+	void SetIsRecoil_arrow(const bool set) { playerData.isRecoil_arrow = set; }
+	void SetAngle_aim(const float set) { angle_aim = set; }
 };
 

@@ -19,11 +19,11 @@ public:
 		float PlayAnimSpeed;		//アニメーションスピード
 	};
 
-	PlayerStateActionBase(int& modelHandle,
+	PlayerStateActionBase(int& modelHandle,int& bottomHandle,
 		AnimState& oldAnimState, AnimState& nowAnimState);
 	~PlayerStateActionBase() {};
 
-	virtual void Initialize(int& modelHandle, PlayerData& playerData)abstract;
+	virtual void Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)abstract;
 
 	virtual bool MotionUpdate(PlayerData& playerData);
 	
@@ -33,12 +33,16 @@ virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 	virtual void Exit(PlayerData& playerData) abstract;			//状態を抜けるとき
 	virtual VECTOR Move(const VECTOR& cameraDirection, PlayerData& playerData);
 	virtual void AimMove(PlayerData& playerData);
-	virtual void SwitchingAnimation(const int& animNum);
+	virtual void SwitchingAnimation(const int& animNum,
+		int& modelHandle,
+		AnimState& oldAnimState, AnimState& nowAnimState);
 
 	void SetOldAnimState();
 	void ResetOldAnimState();
 	void ResetNowAnimState();
 	bool Draw();
+	void MotionUpdate(int& modelHandle, float& animBlendRate,
+		AnimState& nowAnimState, AnimState& oldAnimState);
 
 
 	virtual VECTOR Command(const VECTOR& cameraDirection, PlayerData& playerData, Player& player)abstract;
@@ -47,25 +51,30 @@ virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 	// ゲッター
 	//////////////////////////////////////////////
 	//int GetPrevAttachIndex() { return oldAnimState.AttachIndex; }
-	const AnimState GetOldAnimState() const { return oldAnimState; }
-	const AnimState GetNowAnimState() const { return nowAnimState; }
-	const float GetAnimBlendRate() { return animBlendRate; }
-
+	AnimState GetOldAnimState() const { return oldAnimState; }
+	AnimState GetNowAnimState() const { return nowAnimState; }
+	float GetAnimBlendRate()const { return animBlendRate; }
+	bool GetIsChangeState()const { return isChangeState; }
 
 	void SetPlayAnimSpeed_now(const float set) { nowAnimState.PlayTime_anim = set; }
 	void SetAnimNumber_old(const int num) { animNumber_old = num; }
 
 protected:
-	static constexpr float	AnimBlendSpeed = 0.1f;		// アニメーションのブレンド率変化速度
+	static constexpr float	AnimBlendSpeed = 0.05f;		// アニメーションのブレンド率変化速度
 
 	int modelHandle;			//モデルハンドル
-	float animBlendRate;
+	int bottomHandle;
 	int animNumber_old;
+	float animBlendRate;
+
+	bool isChangeState;
 	bool isPush;
 	bool isMove_Bow;			//弓を構えているか
 
 	AnimState oldAnimState;
 	AnimState nowAnimState;
+	AnimState oldAnimState_bottom;
+	AnimState nowAnimState_bottom;
 
 	//移動
 	//VECTOR moveVec;

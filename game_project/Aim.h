@@ -7,13 +7,13 @@ class Player;
 class Aim : public PlayerStateActionBase
 {
 public:
-	Aim(int& modelHandle, AnimState& oldAnimState,
+	Aim(int& modelHandle, int& bottomHandle, AnimState& oldAnimState,
 		AnimState& nowAnimState, PlayerData& playerData);
 	~Aim();
 
-	void Initialize(int& modelHandle, PlayerData& playerData)override;
+	void Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)override;
 	bool MotionUpdate(PlayerData& playerData)override;
-	void AimMove(PlayerData& playerData)override;
+	void AimMove(PlayerData& playerData, Player& player);
 
 	std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)override;

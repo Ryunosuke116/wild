@@ -26,9 +26,11 @@ private:
 	std::shared_ptr<BaseObject>				field = NULL;
 	std::shared_ptr<Camera>					camera = NULL;
 	std::shared_ptr<BaseGameObjectManager>	characterManager = NULL;
+	std::shared_ptr<BaseGameObjectManager>  arrowManager	 = NULL;
 
 	std::shared_ptr<CharacterManager>	characterManager_actual = NULL;
-	std::shared_ptr<SkyDome>		skyDome_actual		 = NULL;
+	std::shared_ptr<ArrowManager>		arrowManager_actual		= NULL;
+	std::shared_ptr<SkyDome>			skyDome_actual			= NULL;
 
 	bool isCamera;
 	bool isPush;

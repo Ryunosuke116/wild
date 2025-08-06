@@ -13,9 +13,9 @@
 /// コンストラクタ
 /// </summary>
 /// <param name="modelHandle"></param>
-Idle::Idle(int& modelHandle,
+Idle::Idle(int& modelHandle, int& bottomHandle,
     AnimState& oldAnimState, AnimState& nowAnimState, PlayerData& playerData) :
-    PlayerStateActionBase(modelHandle, oldAnimState, nowAnimState)
+    PlayerStateActionBase(modelHandle, bottomHandle, oldAnimState, nowAnimState)
 {
 
 }
@@ -32,7 +32,7 @@ Idle::~Idle()
 /// 初期化
 /// </summary>
 /// <param name="modelHandle"></param>
-void Idle::Initialize(int& modelHandle, PlayerData& playerData)
+void Idle::Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)
 {
     // ３Ｄモデルの０番目のアニメーションをアタッチする
     this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum::idle);
@@ -85,6 +85,7 @@ VECTOR Idle::Command(const VECTOR& cameraDirection, PlayerData& playerData, Play
     if (VSize(moveDirection) != 0.0f)
     {
         playerData.isRun = true;
+        isChangeState = true;
     }
 
     return moveDirection;
@@ -102,6 +103,7 @@ void Idle::JumpMove(PlayerData& playerData, Player& player)
         if (!player.playerCalculation->GetIsJumpPower_add() && !isPush)
         {
             playerData.isJump = true;
+            isChangeState = true;
             isPush = true;
             player.playerCalculation->ChangeIsJumpPower_add_ture();
             player.playerCalculation->SetJumpPower();

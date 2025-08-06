@@ -5,6 +5,8 @@
 #include "BaseObject.h"
 #include "Camera.h"
 #include "Calculation.h"
+#include "DebugDrawer.h"
+
 
 
 /// <summary>
@@ -34,14 +36,58 @@ Camera::~Camera()
 /// <summary>
 /// 初期化
 /// </summary>
-void Camera::Initialize()
+void Camera::Initialize(const VECTOR& playerPosition)
 {
-	aimPosition = VGet(30.0f, 15, -10);
-	spherePosition = VGet(0.0f, 20.0f, 20.0f);
 	a = -177.55f;
 	distance = 50.0f;
+	
+	//視点とカメラの間の座標
+	centerPos = playerPosition;
+	centerPos.y += 14.0f;
 
-	SetCameraPositionAndTarget_UpVecY(aimPosition, spherePosition);
+	float angle = a * DX_PI_F / 360.0f;
+	this->angle = angle;
+
+	//カメラの座標
+	cameraPos.x = centerPos.x + distance * cos(angle);
+	cameraPos.z = centerPos.z + distance * sin(angle);
+
+	//視点の初期化
+	targetPosCalc();
+	//最初は座標を平行にする
+	cameraPos.y = targetPos.y;
+
+	//カメラの向いている方向
+	cameraDirection = VSub(targetPos, cameraPos);
+	cameraDirection = VNorm(cameraDirection);
+
+	/////////////////////////////////////////
+	//	aim用の座標
+	/////////////////////////////////////////
+	float radian = -35.0f * DX_PI_F / 180.0f;
+	//視点とカメラの間の座標
+	centerPos_aim = centerPos;
+	centerPos_aim.y += 10.0f;
+	centerPos_aim = Calculation::Rodrigues(centerPos, centerPos_aim, cameraDirection, radian);
+
+	//カメラの座標
+	cameraPos_aim = cameraPos;
+	cameraPos_aim.y += 5.0f;
+	cameraPos_aim = Calculation::Rodrigues(cameraPos, cameraPos_aim, cameraDirection, radian);
+	
+	//視点座標
+	targetPos_aim = targetPos;
+	targetPos_aim.y += 10.0f;
+	targetPos_aim = Calculation::Rodrigues(targetPos,
+		targetPos_aim, cameraDirection, radian);
+
+	distance_aim = 15.0f;
+	t = 0.0f;
+
+
+	isCalc = false;
+
+	SetCameraPositionAndTarget_UpVecY(cameraPos, targetPos);
 
 	// DXライブラリのカメラとEffekseerのカメラを同期する。
 	Effekseer_Sync3DSetting();
@@ -51,13 +97,26 @@ void Camera::Initialize()
 /// 更新
 /// </summary>
 void Camera::Update(const VECTOR& playerPosition,
+	const PlayerData& playerData,
 	const std::vector<std::shared_ptr<BaseObject>>& fieldObjects)
 {
-
+	VECTOR norm = VNorm(VSub(centerPos, cameraPos));
+	norm.y = 0.0f;
 	centerPos = playerPosition;
 	centerPos.y += 14.0f;
+	centerPos_aim = centerPos;
+	centerPos_aim.y += 5.0f;
 
-	aimPosition_usual.y = spherePosition.y + 15.0f;
+	float radian = -35.0f * DX_PI_F / 180.0f;
+	centerPos_aim = Calculation::Rodrigues(centerPos, centerPos_aim, cameraDirection, radian);
+
+	if (!playerData.isAim)
+	{
+		//recoilPos = VAdd(centerPos, VScale(norm, -distance_aim));
+		//recoilPos.y = cameraPos.y + 10.0f;
+	}
+
+	aimPosition_usual.y = targetPos.y + 15.0f;
 
 	//カメラ移動処理
 	if (CheckHitKey(KEY_INPUT_A) ||
@@ -70,26 +129,58 @@ void Camera::Update(const VECTOR& playerPosition,
 	{
 		a -= 2.0f;
 	}
-	if (CheckHitKey(KEY_INPUT_W))
+	if (CheckHitKey(KEY_INPUT_1) ||
+		PadInput::GetJoyPad_y_right() > 0.0f)
 	{
-		aimPosition.y += 0.5f;
+		cameraPos.y += 0.5f;
+		if (playerData.isAim)
+		{
+			cameraPos_aim.y += 0.5f;
+			t -= 0.01f;
+			if (t <= 0.0f)
+			{
+				t = 0.0f;
+			}
+		}
 	}
-	if (CheckHitKey(KEY_INPUT_S))
+	if (CheckHitKey(KEY_INPUT_2) ||
+		PadInput::GetJoyPad_y_right() < 0.0f)
 	{
-		aimPosition.y -= 0.5f;
+		cameraPos.y -= 0.5f;
+		if (playerData.isAim)
+		{
+			cameraPos_aim.y -= 0.5f;
+			t += 0.01f;
+			if (t >= 1.0f)
+			{
+				t = 1.0f;
+			}
+		}
 	}
 
-	RotateUpdate();
+	RotateUpdate(playerData);
+
+	//カメラが地形に埋まらないようにする
 	for (const auto& fieldObject : fieldObjects)
 	{
 		CameraPosCalc(fieldObject->GetModelHandle());
 	}
+	
+	if (playerData.isAim)
+	{
+		SetCameraPositionAndTarget_UpVecY(cameraPos_aim, targetPos_aim);
+	}
+	else
+	{
+		SetCameraPositionAndTarget_UpVecY(cameraPos, targetPos);
+	}
 
-	SetCameraPositionAndTarget_UpVecY(aimPosition, spherePosition);
-
-	cameraDirection = VSub(spherePosition, aimPosition);
+	cameraDirection = VSub(targetPos, cameraPos);
 	cameraDirection = VNorm(cameraDirection);
-
+	DebugDrawer::Instance().InformationInput_sphere(targetPos, 2.0f, GetColor(255, 0, 255));
+	DebugDrawer::Instance().InformationInput_sphere(targetPos_aim, 2.0f, GetColor(255, 0, 255));
+	DebugDrawer::Instance().InformationInput_sphere(centerPos_aim, 2.0f, GetColor(0, 0, 255));
+	DebugDrawer::Instance().InformationInput_sphere(cameraPos_aim, 2.0f, GetColor(255, 0, 0));
 }
 
 /// <summary>
@@ -100,27 +191,27 @@ void Camera::Update_layout()
 	//y軸↑移動
 	if (CheckHitKey(KEY_INPUT_UP) && CheckHitKey(KEY_INPUT_LCONTROL))
 	{
-		aimPosition.y += 1.0f;
-		spherePosition.y += 1.0f;
+		cameraPos.y += 1.0f;
+		targetPos.y += 1.0f;
 	}
 	//z軸↑移動
 	else if (CheckHitKey(KEY_INPUT_UP))
 	{
-		aimPosition.z += 1.0f;
-		spherePosition.z += 1.0f;
+		cameraPos.z += 1.0f;
+		targetPos.z += 1.0f;
 	}
 
 	//y軸↓移動
 	if (CheckHitKey(KEY_INPUT_DOWN) && CheckHitKey(KEY_INPUT_LCONTROL))
 	{
-		aimPosition.y -= 1.0f;
-		spherePosition.y -= 1.0f;
+		cameraPos.y -= 1.0f;
+		targetPos.y -= 1.0f;
 	}
 	//z軸↓移動
 	else if (CheckHitKey(KEY_INPUT_DOWN))
 	{
-		aimPosition.z -= 1.0f;
-		spherePosition.z -= 1.0f;
+		cameraPos.z -= 1.0f;
+		targetPos.z -= 1.0f;
 	}
 
 	//右回転
@@ -133,8 +224,8 @@ void Camera::Update_layout()
 	else if (CheckHitKey(KEY_INPUT_RIGHT) ||
 		PadInput::GetJoyPad_x_right() < 0.0f)
 	{
-		aimPosition.x += 1.0f;
-		spherePosition.x += 1.0f;
+		cameraPos.x += 1.0f;
+		targetPos.x += 1.0f;
 	}
 
 	//左回転
@@ -147,8 +238,8 @@ void Camera::Update_layout()
 	else if (CheckHitKey(KEY_INPUT_LEFT) ||
 		PadInput::GetJoyPad_x_right() > 0.0f)
 	{
-		aimPosition.x -= 1.0f;
-		spherePosition.x -= 1.0f;
+		cameraPos.x -= 1.0f;
+		targetPos.x -= 1.0f;
 	}
 
 	if (CheckHitKey(KEY_INPUT_9))
@@ -158,7 +249,13 @@ void Camera::Update_layout()
 
 	//RotateUpdate();
 
-	SetCameraPositionAndTarget_UpVecY(aimPosition, spherePosition);
+	SetCameraPositionAndTarget_UpVecY(cameraPos, targetPos);
+}
+
+void Camera::Update_aim()
+{
+	/*targetPos.x = cameraPos.x + distance * cos(angle);
+	targetPos.z = cameraPos.z + distance * sin(angle);*/
 }
 
 /// <summary>
@@ -167,33 +264,55 @@ void Camera::Update_layout()
 bool Camera::Draw()
 {
 
-	/*DrawSphere3D(spherePosition, radius, 30, GetColor(0, 0, 0),
+	/*DrawSphere3D(targetPos, radius, 30, GetColor(0, 0, 0),
 			GetColor(255, 0, 0), FALSE);*/
 
-	printfDx("lookPosition.x %f\n", lookPosition.x);
-	printfDx("lookPosition.y %f\n", lookPosition.y);
-	printfDx("lookPosition.z %f\n", lookPosition.z);
-	printfDx("aimPosition.x %f\n", aimPosition.x);
-	printfDx("aimPosition.y %f\n", aimPosition.y);
-	printfDx("aimPosition.z %f\n", aimPosition.z);
+	printfDx("lookPosition.x %f\n", targetPos.x);
+	printfDx("lookPosition.y %f\n", targetPos.y);
+	printfDx("lookPosition.z %f\n", targetPos.z);
+	printfDx("cameraPos.x %f\n", cameraPos.x);
+	printfDx("cameraPos.y %f\n", cameraPos.y);
+	printfDx("cameraPos.z %f\n", cameraPos.z);
 	return true;
 }
 
-void Camera::RotateUpdate()
+void Camera::RotateUpdate(const PlayerData& playerData)
 {
 	float angle = a * DX_PI_F / 360.0f;
 	this->angle = angle;
+	VECTOR oldCameraPos = cameraPos;
 
-	aimPosition_usual.x = spherePosition.x + distance * cos(angle);
-	aimPosition_usual.z = spherePosition.z + distance * sin(angle);
+	cameraPos.x = centerPos.x + distance * cos(angle);
+	cameraPos.z = centerPos.z + distance * sin(angle);
 
-	aimPosition = aimPosition_usual;
+	float radian = -35.0f * DX_PI_F / 180.0f;
+	cameraPos_aim = cameraPos;
+	cameraPos_aim.y += 2.0f;
+	cameraPos_aim = Calculation::Rodrigues(cameraPos, cameraPos_aim, cameraDirection, radian);
+	isCalc = true;
 
-	float maxRange = 5.0f;
-	float maxRange_ = 10.0f;
+	if (playerData.isAim)
+	{
+		float min_distance = 10.0f;
+		float max_distance = 20.0f;
+		float min_Y = centerPos.y - 10.0f;
+		float max_Y = centerPos.y + 20.0f;
+
+		float easedT = Calculation::EaseOutQuad(t);
+
+		cameraPos_aim.y = min_Y + (max_Y - min_Y) * easedT;
+		distance_aim = min_distance + (max_distance - min_distance) * easedT;
+
+		cameraPos_aim.x = centerPos_aim.x + distance_aim * cos(angle);
+		cameraPos_aim.z = centerPos_aim.z + distance_aim * sin(angle);
+	}
+	else
+	{
+		isCalc = false;
+	}
 
 	//注視する座標からplayerがずれたら修正する
-	PosCalc();
+	targetPosCalc();
 }
 
 /// <summary>
@@ -206,18 +325,31 @@ void Camera::CameraPosCalc(const int& mapHandle)
 	VECTOR addPos;
 
 	//rayが当たっている場合カメラの位置をいじる
-	if (HitCheck::HitRayJudge(mapHandle, -1, spherePosition, aimPosition, hitPoly))
+	if (HitCheck::HitRayJudge(mapHandle, -1, centerPos, cameraPos, hitPoly))
 	{
 		VECTOR direction;
 
-		addPos = VSub(hitPoly.HitPosition, aimPosition_usual);
+		addPos = VSub(hitPoly.HitPosition, cameraPos);
 		direction = VNorm(addPos);
 
 		//addPos = VAdd(addPos,VScale(direction, 2.0f));
 
-		aimPosition = VAdd(aimPosition_usual, addPos);
+		cameraPos = VAdd(cameraPos, addPos);
 	}
 
+	//rayが当たっている場合カメラの位置をいじる
+	if (HitCheck::HitRayJudge(mapHandle, -1, centerPos, targetPos, hitPoly))
+	{
+		VECTOR direction;
+
+		addPos = VSub(hitPoly.HitPosition, targetPos);
+
+		//addPos = VAdd(addPos,VScale(direction, 2.0f));
+
+		targetPos = VAdd(targetPos, addPos);
+	}
+
+	//targetPos_aim = VAdd(targetPos_aim, VSub(targetPos, oldTargetPos));
 }
 
 /// <summary>
@@ -235,16 +367,18 @@ void Camera::Leap(VECTOR& changePosition, const VECTOR& playerPosition, const fl
 
 
 
-void Camera::PosCalc()
+void Camera::targetPosCalc()
 {
-	//lookPosが球の外側にいった場合球の中心座標をずらす
-	if (!HitCheck::HitConfirmation(spherePosition, centerPos, radius, 0.5f))
-	{
-		Leap(spherePosition, centerPos, 0.1f);
-	}
-	else
-	{
-		Leap(spherePosition, centerPos, 0.05f);
-	}
+	//通常時の視点座標
+	VECTOR dir = VSub(centerPos, cameraPos);
+	dir = VNorm(dir);
+	VECTOR scale = VScale(dir, 40.0f);
+	targetPos = VAdd(centerPos, scale);
+
+	//エイム時の視点座標
+	VECTOR dir_aim = VSub(centerPos_aim, cameraPos_aim);
+	dir_aim = VNorm(dir_aim);
+	VECTOR scale_aim = VScale(dir_aim, 50.0f);
+	targetPos_aim = VAdd(centerPos_aim, scale_aim);
 
 }

@@ -106,6 +106,18 @@
     <Filter Include="ソース ファイル\base\object\objectManager">
       <UniqueIdentifier>{4a958fc0-283c-4626-a952-28ee5a0c3e66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Arrow">
+      <UniqueIdentifier>{30711cc7-b18f-4961-a22f-b7de75d067e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\manager\arrow">
+      <UniqueIdentifier>{41ec24d3-6306-459d-852e-ecefe8da6479}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Debug">
+      <UniqueIdentifier>{545ee5ff-2526-4981-ae94-58fcc5f6251f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Observer">
+      <UniqueIdentifier>{29ed25be-241a-435c-aafe-e498e90e579c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -192,6 +204,18 @@
     <ClCompile Include="Aim.cpp">
       <Filter>ソース ファイル\player\state\Aim</Filter>
     </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>ソース ファイル\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowManager.cpp">
+      <Filter>ソース ファイル\manager\arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugDrawer.cpp">
+      <Filter>ソース ファイル\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowObserver.cpp">
+      <Filter>ソース ファイル\Observer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -229,9 +253,6 @@
     </ClInclude>
     <ClInclude Include="Field.h">
       <Filter>ソース ファイル\field</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>ソース ファイル\camera</Filter>
     </ClInclude>
     <ClInclude Include="Calculation.h">
       <Filter>ソース ファイル\calculation</Filter>
@@ -296,8 +317,23 @@
     <ClInclude Include="Jump.h">
       <Filter>ソース ファイル\player\state\jump</Filter>
     </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>ソース ファイル\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowManager.h">
+      <Filter>ソース ファイル\manager\arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDrawer.h">
+      <Filter>ソース ファイル\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowObserver.h">
+      <Filter>ソース ファイル\Observer</Filter>
+    </ClInclude>
     <ClInclude Include="Aim.h">
       <Filter>ソース ファイル\player\state\Aim</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ソース ファイル\camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -26,4 +26,5 @@ struct PlayerData
 	bool isWalk_left;
 	bool isDraw_arrow_now;				//‹|‚ð’e‚¢‚Ä‚¢‚é‚©
 	bool isUse_bow;
+	bool isRecoil_arrow;
 };

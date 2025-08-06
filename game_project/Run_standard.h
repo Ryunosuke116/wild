@@ -5,11 +5,11 @@
 class Run_standard : public PlayerStateActionBase
 {
 public:
-	Run_standard(int& modelHandle, AnimState& oldAnimState,
+	Run_standard(int& modelHandle, int& bottomHandle, AnimState& oldAnimState,
 		AnimState& nowAnimState, PlayerData& playerData);
 	~Run_standard();
 
-	virtual void Initialize(int& modelHandle, PlayerData& playerData)override;
+	virtual void Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)override;
 
 	std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)override;
