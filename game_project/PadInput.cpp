@@ -107,6 +107,16 @@ bool PadInput::isAim()
     return false;
 }
 
+bool PadInput::isSwordAction()
+{
+    if (CheckHitKey(KEY_INPUT_SPACE) ||
+        input->GetNowFrameInput() & PAD_INPUT_X)
+    {
+        return true;
+    }
+    return false;
+}
+
 float PadInput::GetJoyPad_x_left()
 {
     return input->GetJoyPad_x_left();

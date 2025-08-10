@@ -39,6 +39,7 @@ public:
 	static bool isLeft();
 	static bool isJump();
 	static bool isAim();
+	static bool isSwordAction();
 	static float GetJoyPad_x_left();
 	static float GetJoyPad_y_left();
 	static float GetJoyPad_x_right();

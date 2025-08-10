@@ -23,7 +23,8 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
     std::shared_ptr<PlayerStateActionBase>& nowState)
 {
     std::shared_ptr<PlayerStateActionBase> newState = nullptr;
-    bool isUse_bow = SetIsChange_Bow();
+    bool isUse_bow = SetIsChange_bow();
+    bool isChenge_sword = SetIsChange_sword();
 
     //立ち
     if (playerData.isIdle && animNumber_Now != animNum::idle)
@@ -88,6 +89,22 @@ std::shared_ptr<PlayerStateActionBase> AnimationChanger::ChangeState(int& modelH
         animNumber_Now = animNum::standing_Draw_Arrow;
     }
 
+    //剣を構える
+    if (playerData.isSwordState && !isChenge_sword)
+    {
+        //nowState内のアニメーション情報を保存
+        SetNowAnimState(nowState->GetNowAnimState());
+        SetOldAnimState(nowState->GetOldAnimState());
+
+        //newStateを生成
+        newState = std::make_shared<SwordState>(modelHandle, 
+            bottomHandle, oldAnimState,
+            nowAnimState, playerData);
+
+        newState->SetAnimNumber_old(animNumber_Now);
+        animNumber_Now = animNum::sword_Idle;
+    }
+
     if (newState)
     {
         newState->Initialize(modelHandle,bottomHandle, playerData);
@@ -123,7 +140,7 @@ void AnimationChanger::SetNowAnimState(PlayerStateActionBase::AnimState animStat
 /// </summary>
 /// <param name="playerData"></param>
 /// <returns></returns>
-bool AnimationChanger::SetIsChange_Bow()
+bool AnimationChanger::SetIsChange_bow()
 {
     return (animNumber_Now == animNum::draw_Walk_Back ||
         animNumber_Now == animNum::draw_Walk_Forward || 
@@ -144,5 +161,17 @@ bool AnimationChanger::SetIsChange_Bow()
         animNumber_Now == animNum::recoil_Walk_Right ||
         animNumber_Now == animNum::recoil_Jump_down ||
         animNumber_Now == animNum::recoil_Jump_Up
+        ) ? true : false;
+}
+
+bool AnimationChanger::SetIsChange_sword()
+{
+    return (animNumber_Now == animNum::draw_Sword ||
+        animNumber_Now == animNum::run_Sword ||
+        animNumber_Now == animNum::sheath_sword ||
+        animNumber_Now == animNum::slash ||
+        animNumber_Now == animNum::slash_combo ||
+        animNumber_Now == animNum::slash_high ||
+        animNumber_Now == animNum::sword_Idle
         ) ? true : false;
 }

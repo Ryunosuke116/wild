@@ -25,7 +25,7 @@ public:
 
 	virtual void Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)abstract;
 
-	virtual bool MotionUpdate(PlayerData& playerData);
+	virtual void MotionUpdate(PlayerData& playerData);
 	
 virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)abstract;
@@ -36,6 +36,7 @@ virtual std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 	virtual void SwitchingAnimation(const int& animNum,
 		int& modelHandle,
 		AnimState& oldAnimState, AnimState& nowAnimState);
+	virtual void Transfer_swordState(PlayerData& playerData);
 
 	void SetOldAnimState();
 	void ResetOldAnimState();

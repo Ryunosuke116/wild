@@ -81,6 +81,7 @@ VECTOR Idle::Command(const VECTOR& cameraDirection, PlayerData& playerData, Play
     moveDirection = Move(cameraDirection, playerData);
     JumpMove(playerData,player);
     AimMove(playerData);
+    Transfer_swordState(playerData);
 
     if (VSize(moveDirection) != 0.0f)
     {

@@ -33,10 +33,6 @@ Run_standard::~Run_standard()
 void Run_standard::Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)
 {
 
-    if (playerData.isRun)
-    {
-
-    }
     // ３Ｄモデルの０番目のアニメーションをアタッチする
     this->nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum::standard_Run);
 

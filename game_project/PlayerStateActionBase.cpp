@@ -48,7 +48,7 @@ PlayerStateActionBase::PlayerStateActionBase(int& modelHandle,int& bottomHandle,
 /// アニメーション更新
 /// </summary>
 /// <returns></returns>
-bool PlayerStateActionBase::MotionUpdate(PlayerData& playerData)
+void PlayerStateActionBase::MotionUpdate(PlayerData& playerData)
 {
     float totalTime_anim;
 
@@ -106,7 +106,6 @@ bool PlayerStateActionBase::MotionUpdate(PlayerData& playerData)
         MV1SetAttachAnimBlendRate(modelHandle, oldAnimState.AttachIndex, 1.0f - animBlendRate);
     }
 
-    return false;
 }
 
 /// <summary>
@@ -131,7 +130,7 @@ void PlayerStateActionBase::SwitchingAnimation(const int& animNum,
 
     //アニメーションをアタッチ
     nowAnimState.AttachIndex = MV1AttachAnim(modelHandle, animNum);
-    nowAnimState.PlayAnimSpeed = 1.0f;
+    //nowAnimState.PlayAnimSpeed = 1.0f;
 }
 
 void PlayerStateActionBase::MotionUpdate(int& modelHandle, float& animBlendRate,
@@ -265,6 +264,19 @@ void PlayerStateActionBase::AimMove(PlayerData& playerData)
         playerData.isAim = true;
         playerData.isUse_bow = true;
 
+    }
+}
+
+/// <summary>
+/// 剣状態に移行するか
+/// </summary>
+/// <param name="playerData"></param>
+void PlayerStateActionBase::Transfer_swordState(PlayerData& playerData)
+{
+    if (PadInput::isSwordAction())
+    {
+        isChangeState = true;
+        playerData.isSwordState = true;
     }
 }
 

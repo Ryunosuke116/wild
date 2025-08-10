@@ -118,6 +118,9 @@
     <Filter Include="ソース ファイル\player\state\Aim">
       <UniqueIdentifier>{c710207c-ace1-4505-9837-d657016fa7f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\player\state\sword">
+      <UniqueIdentifier>{1dafae3e-c29b-4fa4-b4be-a63b31a69dfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -215,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="ArrowObserver.cpp">
       <Filter>ソース ファイル\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordState.cpp">
+      <Filter>ソース ファイル\player\state\sword</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>ソース ファイル\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordState.h">
+      <Filter>ソース ファイル\player\state\sword</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -27,4 +27,5 @@ struct PlayerData
 	bool isDraw_arrow_now;				//‹|‚ğ’e‚¢‚Ä‚¢‚é‚©
 	bool isUse_bow;
 	bool isRecoil_arrow;
+	bool isSwordState;				//Œ•‚ğ\‚¦‚Ä‚¢‚é‚©
 };

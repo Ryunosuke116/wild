@@ -12,7 +12,7 @@ public:
 	~Aim();
 
 	void Initialize(int& modelHandle, int& bottomHandle, PlayerData& playerData)override;
-	bool MotionUpdate(PlayerData& playerData)override;
+	void MotionUpdate(PlayerData& playerData)override;
 	void AimMove(PlayerData& playerData, Player& player);
 
 	std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,

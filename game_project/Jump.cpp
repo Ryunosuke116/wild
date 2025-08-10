@@ -117,7 +117,7 @@ std::pair<VECTOR, PlayerData> Jump::Update(const VECTOR& cameraDirection,
 /// アニメーション更新
 /// </summary>
 /// <returns></returns>
-bool Jump::MotionUpdate(PlayerData& playerData)
+void Jump::MotionUpdate(PlayerData& playerData)
 {
     float totalTime_anim;
 
@@ -176,7 +176,6 @@ bool Jump::MotionUpdate(PlayerData& playerData)
         MV1SetAttachAnimBlendRate(modelHandle, oldAnimState.AttachIndex, 1.0f - animBlendRate);
     }
 
-    return false;
 }
 
 void Jump::Enter(PlayerData& playerData)

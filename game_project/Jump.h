@@ -15,7 +15,7 @@ public:
 	std::pair<VECTOR, PlayerData> Update(const VECTOR& cameraDirection,
 		const std::vector<std::shared_ptr<BaseObject>>& fieldObjects, Player& player)override;
 
-	bool MotionUpdate(PlayerData& playerData)override;
+	void MotionUpdate(PlayerData& playerData)override;
 
 
 	void Enter(PlayerData& playerData) override;		//ó‘Ô‚É“ü‚Á‚½‚Æ‚«

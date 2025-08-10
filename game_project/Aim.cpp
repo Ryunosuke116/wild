@@ -112,7 +112,7 @@ std::pair<VECTOR, PlayerData> Aim::Update(const VECTOR& cameraDirection,
 /// アニメーション更新
 /// </summary>
 /// <returns></returns>
-bool Aim::MotionUpdate(PlayerData& playerData)
+void Aim::MotionUpdate(PlayerData& playerData)
 {
     float totalTime_anim;
 
@@ -206,7 +206,6 @@ bool Aim::MotionUpdate(PlayerData& playerData)
         MV1SetAttachAnimBlendRate(modelHandle, oldAnimState.AttachIndex, 1.0f - animBlendRate);
     }
 
-    return false;
 }
 
 void Aim::Enter(PlayerData& playerData)

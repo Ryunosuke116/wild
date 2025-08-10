@@ -13,7 +13,7 @@ Player::Player()
 {
     upHandle = MV1LoadModel("material/mv1/player/player.mv1");
     bottomHandle = MV1LoadModel("material/mv1/player/bottom.mv1");
-	modelHandle = MV1LoadModel("material/mv1/player/player.mv1");
+	modelHandle = MV1LoadModel("material/mv1/player/player_ƒ¿0810.mv1");
     arrowHandle = MV1LoadModel("material/mv1/player/arrow_player.mv1");
     swordHandle= MV1LoadModel("material/mv1/player/sword.mv1");
     shieldHandle = MV1LoadModel("material/mv1/player/shield.mv1");
@@ -181,8 +181,8 @@ void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
 bool Player::Draw()
 {
 	MV1DrawModel(modelHandle);
-   // MV1DrawModel(swordHandle);
-    //MV1DrawModel(shieldHandle);
+    MV1DrawModel(swordHandle);
+    MV1DrawModel(shieldHandle);
     if (isDraw_arrow)
     {
         MV1DrawModel(arrowHandle);

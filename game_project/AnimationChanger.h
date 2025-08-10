@@ -13,7 +13,8 @@ public:
 		PlayerData& playerData,
 		std::shared_ptr<PlayerStateActionBase>& nowState);
 	
-	bool SetIsChange_Bow();
+	bool SetIsChange_bow();
+	bool SetIsChange_sword();
 
 	void SetOldAnimState(PlayerStateActionBase::AnimState animState);
 	void SetNowAnimState(PlayerStateActionBase::AnimState animState);
