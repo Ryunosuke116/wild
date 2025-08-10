@@ -7,20 +7,17 @@
 class Camera
 {
 private:
-	VECTOR cameraPos;
-	VECTOR aimPosition_usual;
-	VECTOR lookPosition;
-	VECTOR keepPlayerPosition;
-	VECTOR keepEnemyPosition;
-	VECTOR cameraDirection;
-	VECTOR centerPos;
-	VECTOR centerPos_aim;
+	VECTOR cameraPos;			//カメラの座標
+	VECTOR cameraPos_aim;		//エイム時のカメラ
+	VECTOR aimPosition_usual;	
+	VECTOR cameraDirection;		//カメラの向いている方向
+	VECTOR centerPos;			//カメラと注視点の間の点
+	VECTOR centerPos_aim;		//エイム時のカメラと注視点の間の点
 	VECTOR recoilPos;
-	VECTOR targetPos;
-	VECTOR targetPos_aim;
-	VECTOR cameraPos_aim;
-	VECTOR aimDirection;
-	VECTOR oldTargetPos;
+	VECTOR targetPos;			//カメラの注視点	
+	VECTOR targetPos_aim;		//エイム時の注視点
+	VECTOR aimDirection;		//エイムの方向
+	VECTOR oldTargetPos;		
 
 	float angle;
 	float distance;

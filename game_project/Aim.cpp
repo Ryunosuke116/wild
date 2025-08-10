@@ -103,6 +103,7 @@ std::pair<VECTOR, PlayerData> Aim::Update(const VECTOR& cameraDirection,
 
     ChangeArrowState(playerData);
 
+    DrawFrameUpdate(player);
 
     return std::make_pair(moveDirection, playerData);
 }
@@ -330,6 +331,40 @@ void Aim::AimMove(PlayerData& playerData, Player& player)
             player.NotifyRecoilArrow();
         }
     }
+}
+
+void Aim::DrawFrameUpdate(Player& player)
+{
+    if (arrowStateNum_now == ArrowState::draw &&
+        nowAnimState.PlayTime_anim >= 10.5f)
+    {
+        player.SetIsDraw_arrow(true);
+    }
+
+    if (arrowStateNum_now == ArrowState::recoil)
+    {
+        player.SetIsDraw_arrow(false);
+        //弓矢のモデルの切り替え
+        SetFrameVisible(95, true);
+        SetFrameVisible(97, false);
+    }
+
+    if (arrowStateNum_now == ArrowState::draw &&
+        nowAnimState.PlayTime_anim >= 20.0f)
+    {
+        SetFrameVisible(95, false);
+        SetFrameVisible(97, true);
+    }
+}
+
+/// <summary>
+/// フレームの表示・非表示の設定
+/// </summary>
+/// <param name="frameIndex"></param>
+/// <param name="flag"></param>
+void Aim::SetFrameVisible(int frameIndex,const bool flag)
+{
+    MV1SetFrameVisible(modelHandle, frameIndex, flag);
 }
 
 

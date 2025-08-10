@@ -37,9 +37,6 @@
     <Filter Include="ソース ファイル\base\chara">
       <UniqueIdentifier>{858f9232-e45d-41f6-b423-8a7fea610804}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\padInput">
-      <UniqueIdentifier>{ea03064a-475e-40b0-9974-605742ef525a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\input">
       <UniqueIdentifier>{dc52bd02-3cc6-4808-9041-1688897231b2}</UniqueIdentifier>
     </Filter>
@@ -67,18 +64,6 @@
     <Filter Include="ソース ファイル\skyDome">
       <UniqueIdentifier>{27330440-d910-4295-8d2c-523df7c7630c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\player\state">
-      <UniqueIdentifier>{ddbbd334-0a3c-404c-b30c-678152d29649}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\player\state\base">
-      <UniqueIdentifier>{49587061-7aca-48b8-8c33-750a05037c70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\player\state\run">
-      <UniqueIdentifier>{612f237d-0c7e-4a25-958a-830a21ea0ac7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\player\state\idle">
-      <UniqueIdentifier>{c0bdae21-448c-490a-84e8-7b5fad7c8a46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\base\Calculation_chara">
       <UniqueIdentifier>{4521be3d-28e6-4a14-b46a-39856e08ac44}</UniqueIdentifier>
     </Filter>
@@ -93,12 +78,6 @@
     </Filter>
     <Filter Include="ソース ファイル\gameTimer">
       <UniqueIdentifier>{5ec3e14a-9720-4645-a0c9-f6544a04b772}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\player\state\jump">
-      <UniqueIdentifier>{d6e51cf7-29e2-4b6a-882e-1e14d7e1a7b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\player\state\Aim">
-      <UniqueIdentifier>{c710207c-ace1-4505-9837-d657016fa7f9}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\manager\collision">
       <UniqueIdentifier>{983115f9-bc2a-4e14-b476-f734ca0de0eb}</UniqueIdentifier>
@@ -117,6 +96,27 @@
     </Filter>
     <Filter Include="ソース ファイル\Observer">
       <UniqueIdentifier>{29ed25be-241a-435c-aafe-e498e90e579c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\pad">
+      <UniqueIdentifier>{ea03064a-475e-40b0-9974-605742ef525a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state">
+      <UniqueIdentifier>{ddbbd334-0a3c-404c-b30c-678152d29649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\base">
+      <UniqueIdentifier>{49587061-7aca-48b8-8c33-750a05037c70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\run">
+      <UniqueIdentifier>{612f237d-0c7e-4a25-958a-830a21ea0ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\idle">
+      <UniqueIdentifier>{c0bdae21-448c-490a-84e8-7b5fad7c8a46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\jump">
+      <UniqueIdentifier>{d6e51cf7-29e2-4b6a-882e-1e14d7e1a7b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\player\state\Aim">
+      <UniqueIdentifier>{c710207c-ace1-4505-9837-d657016fa7f9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,7 +142,7 @@
       <Filter>ソース ファイル\base\chara</Filter>
     </ClCompile>
     <ClCompile Include="PadInput.cpp">
-      <Filter>ソース ファイル\padInput</Filter>
+      <Filter>ソース ファイル\pad</Filter>
     </ClCompile>
     <ClCompile Include="input.cpp">
       <Filter>ソース ファイル\input</Filter>
@@ -240,7 +240,7 @@
       <Filter>ソース ファイル\base\chara</Filter>
     </ClInclude>
     <ClInclude Include="PadInput.h">
-      <Filter>ソース ファイル\padInput</Filter>
+      <Filter>ソース ファイル\pad</Filter>
     </ClInclude>
     <ClInclude Include="input.h">
       <Filter>ソース ファイル\input</Filter>

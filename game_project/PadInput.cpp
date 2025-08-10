@@ -100,7 +100,7 @@ bool PadInput::isJump()
 bool PadInput::isAim()
 {
     if (CheckHitKey(KEY_INPUT_F) ||
-        input->GetNowFrameInput() & PAD_INPUT_R)
+        input->GetNowFrameInput_direct_Z() < 0)
     {
         return true;
     }

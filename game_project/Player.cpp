@@ -14,7 +14,9 @@ Player::Player()
     upHandle = MV1LoadModel("material/mv1/player/player.mv1");
     bottomHandle = MV1LoadModel("material/mv1/player/bottom.mv1");
 	modelHandle = MV1LoadModel("material/mv1/player/player.mv1");
-    arrowHandle = MV1LoadModel("material/mv1/player/arrow.mv1");
+    arrowHandle = MV1LoadModel("material/mv1/player/arrow_player.mv1");
+    swordHandle= MV1LoadModel("material/mv1/player/sword.mv1");
+    shieldHandle = MV1LoadModel("material/mv1/player/shield.mv1");
     frameName = "mixamorig:RightHandThumb4";
     position = VGet(0.0f, 10.0f, 0.0f);
 	MV1SetScale(modelHandle, VGet(modelScale, modelScale, modelScale));
@@ -44,23 +46,23 @@ void Player::Initialize()
 {
     playerData = { false };
     playerData.isIdle = true;
+    isDraw_arrow = false;
     nowState = std::move(animationChacger->ChangeState(modelHandle,bottomHandle, playerData, nowState));
     nowState->Initialize(modelHandle,bottomHandle,playerData);
 
     positionData.position_bottom = position;
     positionData.position_top = MV1GetFramePosition(modelHandle, 6);
 
-    int frameIndex = MV1SearchFrame(modelHandle, "mixamorig:RightHandThumb4");
-
-    MATRIX frameMatrix = MV1GetFrameLocalWorldMatrix(modelHandle, frameIndex);
-
-    MV1SetMatrix(arrowHandle, frameMatrix);
+    FramePositionSetting(swordHandle, "mixamorig:RightHand.001");
+    FramePositionSetting(shieldHandle, "mixamorig:LeftForeArm.001");
 
     animBlendRate = 1.0f;
     keepPlayTime_anim = 0.0f;
     currentPlayTime_anim = 0.0f;
     currentPlayAnimSpeed = 1.0f;
     angle_aim = 0.0f;
+
+    MV1SetFrameVisible(modelHandle, 97, false);
     attachIndex = MV1AttachAnim(bottomHandle, 16);
     // 再生時間をセットする
     MV1SetAttachAnimTime(bottomHandle, attachIndex, currentPlayTime_anim);
@@ -126,8 +128,6 @@ void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
     nowState->MotionUpdate(playerData);
 
     UpdateAngle(moveDirection_now, playerData.isTurn_right);
-    
-    //MV1SetRotationXYZ(bottomHandle, VGet(rotate_x * DX_PI_F / 180.0f, angle, 0.0f));
 
     //MotionUpdate();
     if (!playerData.isAim)
@@ -157,17 +157,19 @@ void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
     //   
     //}
 
+
+
     /////////////////////////////////////
     /// デバッグ用
     ///////////////////////////////////////
 
+    DebugDrawer::Instance().InformationInput_string_int("mesh総数 %d\n", MV1GetMeshNum(modelHandle));
     DebugDrawer::Instance().InformationInput_string_bool("isGround %d\n", playerData.isGround);
     DebugDrawer::Instance().InformationInput_string_bool("isAim %d\n", playerData.isAim);
     DebugDrawer::Instance().InformationInput_string_bool("isUse_bow %d\n", playerData.isUse_bow);
     DebugDrawer::Instance().InformationInput_string_VECTOR("playerPosition.x %f\nplayerPosition.y %f\nplayerPosition.z %f\n", position);
     DebugDrawer::Instance().InformationInput_string_float("JoyPad_x_left %f\n", PadInput::GetJoyPad_x_left());
     DebugDrawer::Instance().InformationInput_string_float("JoyPad_y_left %f\n", PadInput::GetJoyPad_y_left());
-    DebugDrawer::Instance().InformationInput_string_int("mesh数 %d", MV1GetMeshNum(modelHandle));
     DebugDrawer::Instance().InformationInput_string_float("angle_aim %f\n", angle_aim);
     //矢先 5
 	//持ち手（?）2
@@ -179,7 +181,12 @@ void Player::Update(const float& deltaTime, const VECTOR& cameraDirection,
 bool Player::Draw()
 {
 	MV1DrawModel(modelHandle);
-    MV1DrawModel(arrowHandle);
+   // MV1DrawModel(swordHandle);
+    //MV1DrawModel(shieldHandle);
+    if (isDraw_arrow)
+    {
+        MV1DrawModel(arrowHandle);
+    }
 
 	VECTOR nowFrame = MV1GetFramePosition(modelHandle, nowFrameNumber);
 
@@ -353,6 +360,20 @@ void Player::Receive_CollisionResult()
     playerData.isGround = collision_result.isHitGround;
     position = collision_result.position_new;
     playerData.isHitWall = collision_result.isHitWall;
+}
+
+/// <summary>
+/// フレームの座標にセット
+/// </summary>
+/// <param name="modelHandle"></param>
+/// <param name="path"></param>
+void Player::FramePositionSetting(const int& modelHandle, const char *path)
+{
+    int frameIndex = MV1SearchFrame(this->modelHandle, path);
+
+    MATRIX frameMatrix = MV1GetFrameLocalWorldMatrix(this->modelHandle, frameIndex);
+
+    MV1SetMatrix(modelHandle, frameMatrix);
 }
 
 /// <summary>

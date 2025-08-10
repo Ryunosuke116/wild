@@ -26,6 +26,9 @@ public:
 	void Change_draw(PlayerData& playerData);
 	void Change_recoil(PlayerData& playerData);
 	void Change_aim(PlayerData& playerData);
+	void DrawFrameUpdate(Player& player);
+
+	void SetFrameVisible(int frameIndex, const bool flag);
 
 private:
 	static constexpr float playAnimSpeed = 0.5f;

@@ -44,6 +44,8 @@ private:
 	int upHandle;
 	int attachIndex;
 	int bottomHandle;
+	int swordHandle;
+	int shieldHandle;
 
 	float radian_wall;
 	float degree_pad_now;
@@ -55,6 +57,7 @@ private:
 	bool isChange_falling;				//アニメーションを変更するか
 	bool isCalc;
 	bool isCalc_moveVec;
+	bool isDraw_arrow;				//矢を描画するか
 
 	std::string frameName;
 
@@ -71,6 +74,7 @@ public:
 	void AddObserver(std::shared_ptr<ArrowObserver> observer) { observers.push_back(observer); }
 	void RemoveObserver(std::shared_ptr<ArrowObserver> observer);
 	void NotifyRecoilArrow();
+	void FramePositionSetting(const int& modelHandle, const char *path);
 
 	Player();
 	~Player();
@@ -97,7 +101,9 @@ public:
 	//　ゲッター
 	///////////////////////////////////
 
-	int GetArrowHandle() { return arrowHandle; }
+	int GetSwordHandle()const { return swordHandle; }
+	int GetShieldHandle()const { return shieldHandle; }
+	int GetArrowHandle()const { return arrowHandle; }
 	VECTOR GetCenterPos() { return centerPosition; }
 	VECTOR GetTopPos() { return topPosition; }
 	VECTOR GetBottomPos() { return bottomPosition; }
@@ -117,5 +123,6 @@ public:
 	void SetPos(const VECTOR set) { position = set; }
 	void SetIsRecoil_arrow(const bool set) { playerData.isRecoil_arrow = set; }
 	void SetAngle_aim(const float set) { angle_aim = set; }
+	void SetIsDraw_arrow(const bool set) { isDraw_arrow = set; }
 };
 

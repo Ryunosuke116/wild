@@ -102,6 +102,7 @@ void Camera::Update(const VECTOR& playerPosition,
 {
 	VECTOR norm = VNorm(VSub(centerPos, cameraPos));
 	norm.y = 0.0f;
+	
 	centerPos = playerPosition;
 	centerPos.y += 14.0f;
 	centerPos_aim = centerPos;

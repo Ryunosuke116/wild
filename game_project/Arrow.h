@@ -16,5 +16,6 @@ public:
 private:
 	float angle;
 	VECTOR direction;
+	VECTOR hitCheckPos;
 };
 

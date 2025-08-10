@@ -1,4 +1,3 @@
-#include "common.h"
 #include "Input.h"
 #include "Calculation.h"
 
@@ -32,6 +31,7 @@ void Input::Update()
 
 	// 現在の入力状態を取得
 	nowFrameInput = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+	nowDirectInput = GetJoypadDirectInputState(DX_INPUT_KEY_PAD1, &input_direct);
 
 	// 今のフレームで新たに押されたボタンのビットだけ立っている値を nowFrameNewInput に代入する
 	nowFrameNewInput = nowFrameInput & ~Old;

@@ -74,11 +74,9 @@ void CharacterManager::Update(const std::vector<std::shared_ptr<BaseObject>>& fi
 		chara->PositionUpdate();
 		if (auto player = std::dynamic_pointer_cast<Player>(chara))
 		{
-			int frameIndex = MV1SearchFrame(player->GetModelHandle(), "mixamorig:RightHand");
-
-			MATRIX frameMatrix = MV1GetFrameLocalWorldMatrix(player->GetModelHandle(), frameIndex);
-
-			MV1SetMatrix(player->GetArrowHandle(), frameMatrix);
+			player->FramePositionSetting(player->GetSwordHandle(), "mixamorig:RightHand.001");
+			player->FramePositionSetting(player->GetShieldHandle(), "mixamorig:LeftForeArm.001");
+			player->FramePositionSetting(player->GetArrowHandle(), "mixamorig:RightHand");
 		}
 	}
 

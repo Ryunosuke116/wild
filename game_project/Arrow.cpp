@@ -1,13 +1,14 @@
 #include "common.h"
 #include <string>
 #include "Arrow.h"
+#include "DebugDrawer.h"
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 Arrow::Arrow()
 {
-	modelHandle = MV1LoadModel("material/mv1/player/arrow.mv1");
+	modelHandle = MV1LoadModel("material/mv1/player/arrow_2.0.mv1");
 }
 
 /// <summary>
@@ -30,7 +31,7 @@ void Arrow::Initialize(const int& modelHandle_player,
 	MV1SetPosition(modelHandle, position);
 	MV1SetScale(modelHandle, VGet(0.1f, 0.1f, 0.1f));
 
-	MV1SetRotationXYZ(modelHandle, VGet(-90.0f * DX_PI_F / 180.0f, angle_player, 0.0f));
+	MV1SetRotationXYZ(modelHandle, VGet(0.0f, angle_player, 0.0f));
 	angle = angle_player;
 	
 	MATRIX rotY = MGetRotY(angle);
@@ -45,8 +46,13 @@ void Arrow::Initialize(const int& modelHandle_player,
 /// </summary>
 void Arrow::Update()
 {
-	position = VAdd(position, direction);
+	VECTOR velocity = VScale(direction, 4.0f);
+	position = VAdd(position, velocity);
+
 	MV1SetPosition(modelHandle, position);
+
+	hitCheckPos = MV1GetFramePosition(modelHandle, 5);
+	DebugDrawer::Instance().InformationInput_sphere(hitCheckPos, 2.0f, GetColor(255, 0, 0));
 }
 
 /// <summary>
